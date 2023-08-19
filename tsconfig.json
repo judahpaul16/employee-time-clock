@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "ESNext",
+    "resolveJsonModule": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "lib": ["dom", "es6"]
+  },
+  "include": ["src/**/*.ts", "src/types/*.d.ts"],
+  "exclude": ["node_modules"]
+}
