@@ -5,39 +5,79 @@ html, body, canvas {
     padding: 0;
     text-align: center;
     overflow: hidden;
-}
-
-.main-container {
-    display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
+  }
+  
+  .time-clock-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .main-container {
     display: inline-flex;
     align-items: center;
+    text-align: center;
     height: 100%;
     justify-content: space-between;
-}
-
-.keypad-container {
-    display: flex;
-    flex-wrap: wrap;
+  }
+  
+  .keypad-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     width: 200px;
     margin: 2em auto;
-}
+    justify-content: center;
+  }
   
-.keypad-button {
+  .keypad-button {
     width: 50px;
     height: 50px;
     font-size: 20px;
     margin: 5px;
-    border: 1px solid #888;
+    border: 2px solid #888;
     background-color: #f0f0f0;
     cursor: pointer;
-    transition: background-color 0.3s;
-}
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  }
   
-.keypad-button:hover {
+  .keypad-button:hover {
     background-color: #ddd;
-}
+    transform: scale(1.1);
+  }
+  
+  .action-buttons {
+    display: inline-grid;
+  }
+  
+  .action-buttons button {
+    display: block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-inline: 1em;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .action-buttons button:hover {
+    background-color: #0056b3;
+  }
+  
+  #currentTime {
+    margin-bottom: 1em;
+  }
 
-.keypad-button:nth-last-child(-n+2) {
-    font-size: 10pt;
-}
+  #currentPin {
+    width: fit-content;
+    margin: auto;
+    padding: 0.5em;
+    border: solid gainsboro;
+  }
+  

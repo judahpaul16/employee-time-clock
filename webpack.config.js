@@ -39,4 +39,7 @@ module.exports = {
     clean: true,
     publicPath: '/',
   },
+  devServer: {
+    port: 8081,
+  },
 };
