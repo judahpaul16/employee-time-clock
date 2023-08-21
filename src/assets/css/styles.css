@@ -38,6 +38,6 @@ html, body, canvas {
     background-color: #ddd;
 }
 
-.keypad-button:last-of-type {
+.keypad-button:nth-last-child(-n+2) {
     font-size: 10pt;
 }
