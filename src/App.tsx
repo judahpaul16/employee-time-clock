@@ -4,7 +4,6 @@ import TimeCard from './components/TimeCard';
 
 const App: React.FC = () => {
   const [pin, setPin] = useState('');
-  const [action, setAction] = useState<'clockIn' | 'clockOut' | 'startBreak' | 'endBreak'>('clockIn');
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleString());
   const [timeCardRecords, setTimeCardRecords] = useState<{ pin: string; records: { action: string; time: string }[] }[]>([]);
 
