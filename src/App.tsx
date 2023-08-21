@@ -1,37 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import Keypad from './components/Keypad';
+import TimeCard from './components/TimeCard';
 
 const App: React.FC = () => {
   const [pin, setPin] = useState('');
   const [action, setAction] = useState<'clockIn' | 'clockOut' | 'startBreak' | 'endBreak'>('clockIn');
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleString());
+  const [timeCardRecords, setTimeCardRecords] = useState<{ pin: string; records: { action: string; time: string }[] }[]>([]);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date().toLocaleString());
     }, 1000);
 
-    return () => clearInterval(timer); // Clear the interval when the component unmounts
+    return () => clearInterval(timer);
   }, []);
 
   const handleKeyPress = (key: string) => {
     setPin(pin + key);
   };
 
-  const handleAction = (time: string) => {
-    switch (action) {
-      case 'clockIn':
-        console.log(`Employee clocked in at ${time}`);
-        break;
-      case 'clockOut':
-        console.log(`Employee clocked out at ${time}`);
-        break;
-      case 'startBreak':
-        console.log(`Employee started break at ${time}`);
-        break;
-      case 'endBreak':
-        console.log(`Employee ended break at ${time}`);
-        break;
+  const handleActionClick = (selectedAction: 'clockIn' | 'clockOut' | 'startBreak' | 'endBreak') => {
+    const record = { action: selectedAction.charAt(0).toUpperCase() + selectedAction.slice(1), time: currentTime };
+    const existingRecord = timeCardRecords.find((rec) => rec.pin === pin);
+    if (existingRecord) {
+      existingRecord.records.push(record);
+      setTimeCardRecords([...timeCardRecords]);
+    } else {
+      setTimeCardRecords([...timeCardRecords, { pin, records: [record] }]);
     }
     setPin('');
   };
@@ -45,11 +41,12 @@ const App: React.FC = () => {
         <Keypad onKeyPress={handleKeyPress} />
       </div>
       <div className="action-buttons">
-        <button onClick={() => setAction('clockIn')}>Clock In</button>
-        <button onClick={() => setAction('clockOut')}>Clock Out</button>
-        <button onClick={() => setAction('startBreak')}>Start Break</button>
-        <button onClick={() => setAction('endBreak')}>End Break</button>
-      </div>
+        <button onClick={() => handleActionClick('clockIn')}>Clock In</button>
+        <button onClick={() => handleActionClick('clockOut')}>Clock Out</button>
+        <button onClick={() => handleActionClick('startBreak')}>Start Break</button>
+        <button onClick={() => handleActionClick('endBreak')}>End Break</button>
+      </div><hr></hr>
+      <TimeCard records={timeCardRecords} />
     </div>
   );
 };

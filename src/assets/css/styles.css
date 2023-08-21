@@ -5,32 +5,36 @@ html, body, canvas {
     padding: 0;
     text-align: center;
     overflow: hidden;
-  }
-  
-  .time-clock-container {
+}
+
+body {
+    overflow-y: scroll !important;
+}
+
+.time-clock-container {
     font-family: Arial, sans-serif;
     padding: 20px;
     height: 100%;
     width: 100%;
-  }
-  
-  .main-container {
+}
+
+.main-container {
     display: inline-flex;
     align-items: center;
     text-align: center;
     height: 100%;
     justify-content: space-between;
-  }
-  
-  .keypad-container {
+}
+
+.keypad-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     width: 200px;
     margin: 2em auto;
     justify-content: center;
-  }
-  
-  .keypad-button {
+}
+
+.keypad-button {
     width: 50px;
     height: 50px;
     font-size: 20px;
@@ -41,18 +45,18 @@ html, body, canvas {
     transition: all 0.3s ease;
     border-radius: 10px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .keypad-button:hover {
+}
+
+.keypad-button:hover {
     background-color: #ddd;
     transform: scale(1.1);
-  }
-  
-  .action-buttons {
+}
+
+.action-buttons {
     display: inline-grid;
-  }
-  
-  .action-buttons button {
+}
+
+.action-buttons button {
     display: block;
     margin: 10px 0;
     padding: 10px 20px;
@@ -64,20 +68,46 @@ html, body, canvas {
     transition: background-color 0.3s;
     border-radius: 5px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .action-buttons button:hover {
-    background-color: #0056b3;
-  }
-  
-  #currentTime {
-    margin-bottom: 1em;
-  }
+}
 
-  #currentPin {
+.action-buttons button:hover {
+    background-color: #0056b3;
+}
+
+#currentTime {
+    margin-bottom: 1em;
+}
+
+#currentPin {
     width: fit-content;
     margin: auto;
     padding: 0.5em;
     border: solid gainsboro;
-  }
-  
+}
+
+.time-card {
+    margin-top: 20px;
+    width: fit-content;
+    margin: auto;
+}
+
+.time-card table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.time-card th,
+.time-card td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.time-card th {
+    background-color: #f0f0f0;
+}
+
+hr {
+    width: 85%;
+    margin: auto;
+}
