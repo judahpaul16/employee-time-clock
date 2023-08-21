@@ -15,11 +15,11 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h1>Employee Pin Clock</h1>
+      <h1>Employee Time Clock</h1>
       <div>Pin: {pin}</div>
       <div className="main-container">
-        <Keypad onKeyPress={handleKeyPress} onClockIn={handleClockIn}/>
-        <Keypad onKeyPress={handleKeyPress} onClockIn={handleClockIn}/>
+        <Keypad onKeyPress={handleKeyPress} onClockIn={handleClockIn} type={"In"}/>
+        <Keypad onKeyPress={handleKeyPress} onClockIn={handleClockIn} type={"Out"}/>
       </div>  
     </div>
   );
