@@ -17,7 +17,10 @@ const App: React.FC = () => {
     <div>
       <h1>Employee Pin Clock</h1>
       <div>Pin: {pin}</div>
-      <Keypad onKeyPress={handleKeyPress} onClockIn={handleClockIn}/>
+      <div className="main-container">
+        <Keypad onKeyPress={handleKeyPress} onClockIn={handleClockIn}/>
+        <Keypad onKeyPress={handleKeyPress} onClockIn={handleClockIn}/>
+      </div>  
     </div>
   );
 };
