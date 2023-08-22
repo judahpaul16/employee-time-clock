@@ -5,6 +5,7 @@ html, body, canvas {
     padding: 0;
     text-align: center;
     overflow: hidden;
+    transition: all 0.3s ease;
 }
 
 body {

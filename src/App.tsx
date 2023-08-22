@@ -20,6 +20,16 @@ const App: React.FC = () => {
   };
 
   const handleActionClick = (selectedAction: 'clockIn' | 'clockOut' | 'startBreak' | 'endBreak') => {
+    // Flash Red and exit the function if the pin is empty
+    if (pin === '') {
+      let currentPin = document.getElementById('currentPin');
+      currentPin.style.borderColor = '#ff7866'; // red
+      setTimeout(() => {currentPin.style.borderColor = 'gainsboro';}, 250); // grey
+      setTimeout(() => {currentPin.style.borderColor = '#ff7866'; }, 500); // red
+      setTimeout(() => {currentPin.style.borderColor = 'gainsboro'; }, 750); // grey
+      return;
+    }
+  
     const record = { action: selectedAction.charAt(0).toUpperCase() + selectedAction.slice(1), time: currentTime };
     const existingRecord = timeCardRecords.find((rec) => rec.pin === pin);
     if (existingRecord) {
@@ -29,7 +39,7 @@ const App: React.FC = () => {
       setTimeCardRecords([...timeCardRecords, { pin, records: [record] }]);
     }
     setPin('');
-  };
+  };  
 
   return (
     <div className="time-clock-container">
