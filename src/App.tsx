@@ -5,12 +5,17 @@ import TimeCard from './components/TimeCard';
 const App: React.FC = () => {
   const [pin, setPin] = useState('');
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleString());
-  const [timeCardRecords, setTimeCardRecords] = useState<{ pin: string; records: { action: string; time: string }[] }[]>([]);
+  const [timeCardRecords, setTimeCardRecords] = useState<{ id: number; pin: string; action: string; time: string }[]>([]);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date().toLocaleString());
     }, 1000);
+
+    fetch('http://localhost:3001/records')
+      .then((response) => response.json())
+      .then((data) => setTimeCardRecords(data))
+      .catch((error) => console.error('Error fetching records:', error));
 
     return () => clearInterval(timer);
   }, []);
@@ -20,8 +25,9 @@ const App: React.FC = () => {
   };
 
   const handleActionClick = (selectedAction: 'clockIn' | 'clockOut' | 'startBreak' | 'endBreak') => {
-    // Flash Red and exit the function if the pin is empty
+    // Flash red and exit early if no PIN is entered
     if (pin === '') {
+      document.body.scrollTo(0, 0); // scroll up
       let currentPin = document.getElementById('currentPin');
       currentPin.style.borderColor = '#ff7866'; // red
       setTimeout(() => {currentPin.style.borderColor = 'gainsboro';}, 250); // grey
@@ -29,17 +35,21 @@ const App: React.FC = () => {
       setTimeout(() => {currentPin.style.borderColor = 'gainsboro'; }, 750); // grey
       return;
     }
-  
+
     const record = { action: selectedAction.charAt(0).toUpperCase() + selectedAction.slice(1), time: currentTime };
-    const existingRecord = timeCardRecords.find((rec) => rec.pin === pin);
-    if (existingRecord) {
-      existingRecord.records.push(record);
-      setTimeCardRecords([...timeCardRecords]);
-    } else {
-      setTimeCardRecords([...timeCardRecords, { pin, records: [record] }]);
-    }
+    fetch('http://localhost:3001/record', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pin, action: record.action, time: record.time })
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      setTimeCardRecords([...timeCardRecords, { id: data.id, pin, action: record.action, time: record.time }]);
+    })
+    .catch((error) => console.error('Error adding record:', error));
+
     setPin('');
-  };  
+  };
 
   return (
     <div className="time-clock-container">

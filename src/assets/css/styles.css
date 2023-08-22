@@ -88,8 +88,14 @@ body {
 
 .time-card {
     margin-top: 20px;
-    width: fit-content;
-    margin: auto;
+    width: 100%;
+}
+
+.time-card > div {
+    display: inline-block;
+    width: 30%;
+    margin-inline: 1em;
+    vertical-align: top;
 }
 
 .time-card table {
