@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Keypad from './components/Keypad';
 import TimeCard from './components/TimeCard';
 
 const App: React.FC = () => {
+  const timeClockContainerRef = useRef<HTMLDivElement>(null);
   const [pin, setPin] = useState('');
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleString());
   const [timeCardRecords, setTimeCardRecords] = useState<{ id: number; name: string; pin: string; action: string; time: string }[]>([]);
@@ -19,9 +20,20 @@ const App: React.FC = () => {
 
     return () => clearInterval(timer);
   }, []);
+  
+  useEffect(() => {
+    timeClockContainerRef.current?.focus();
+  }, []);  
 
   const handleKeyPress = (key: string) => {
     setPin(pin + key);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Check if the key is a number
+    if (!isNaN(Number(e.key))) {
+      handleKeyPress(e.key);
+    }
   };
 
   const handleActionClick = (selectedAction: 'clockIn' | 'clockOut' | 'startBreak' | 'endBreak') => {
@@ -52,7 +64,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="time-clock-container">
+    <div className="time-clock-container" ref={timeClockContainerRef} onKeyDown={handleKeyDown} tabIndex={0}>
       <h1>Employee Time Clock</h1>
       <div id="currentTime">Current Time: {currentTime}</div>
       <div id="currentPin">Enter Your PIN: {pin}</div>
