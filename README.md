@@ -1,6 +1,6 @@
 # Employee Time Clock
 
-A simple web-based employee time clock application built with Node.js.
+A simple web-based employee time clock application built with React.
 
 ## Requirements
 
