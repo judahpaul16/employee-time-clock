@@ -24,6 +24,7 @@ const db = new sqlite3.Database('./database.db', (err) => {
 
 db.run(`CREATE TABLE IF NOT EXISTS records (
     id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL DEFAULT 'Unknown',
     pin TEXT NOT NULL,
     action TEXT NOT NULL,
     time TEXT NOT NULL
@@ -42,13 +43,24 @@ app.get('/records', (req, res) => {
 
 // Endpoint to add record
 app.post('/record', (req, res) => {
-  const { pin, action, time } = req.body;
-  db.run('INSERT INTO records (pin, action, time) VALUES (?, ?, ?)', [pin, action, time], (err) => {
-    if (err) return res.status(500).send(err);
-    res.status(201).json({ message: 'Record added.' });
+    const { pin, action, time } = req.body;
+  
+    // Get the name associated with the PIN
+    db.get('SELECT name FROM records WHERE pin = ?', [pin], (err, row) => {
+      if (err) return res.status(500).send(err);
+  
+      const name = row ? row.name : 'Unknown';
+  
+      // Insert the new record
+      db.run('INSERT INTO records (name, pin, action, time) VALUES (?, ?, ?, ?)', [name, pin, action, time], function(err) {
+        if (err) return res.status(500).send(err);
+        
+        // Return the new record ID and name
+        res.status(201).json({ id: this.lastID, name });
+      });
+    });
   });
-});
-
+  
 // Starting the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

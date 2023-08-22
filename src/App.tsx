@@ -5,7 +5,7 @@ import TimeCard from './components/TimeCard';
 const App: React.FC = () => {
   const [pin, setPin] = useState('');
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleString());
-  const [timeCardRecords, setTimeCardRecords] = useState<{ id: number; pin: string; action: string; time: string }[]>([]);
+  const [timeCardRecords, setTimeCardRecords] = useState<{ id: number; name: string; pin: string; action: string; time: string }[]>([]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -44,7 +44,7 @@ const App: React.FC = () => {
     })
     .then((response) => response.json())
     .then((data) => {
-      setTimeCardRecords([...timeCardRecords, { id: data.id, pin, action: record.action, time: record.time }]);
+      setTimeCardRecords([...timeCardRecords, { id: data.id, name: data.name, pin, action: record.action, time: record.time }]);
     })
     .catch((error) => console.error('Error adding record:', error));
 

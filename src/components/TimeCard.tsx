@@ -2,6 +2,7 @@ import React from 'react';
 
 interface Record {
   id: number;
+  name: string;
   pin: string;
   action: string;
   time: string;
@@ -13,20 +14,20 @@ interface TimeCardProps {
 
 const TimeCard: React.FC<TimeCardProps> = ({ records }) => {
   // Group the records by PIN
-  const groupedRecords: { [pin: string]: Record[] } = {};
+  const groupedRecords: { [pin: string]: { name: string; records: Record[] } } = {};
   records.forEach((record) => {
     if (!groupedRecords[record.pin]) {
-      groupedRecords[record.pin] = [];
+      groupedRecords[record.pin] = { name: record.name, records: [] };
     }
-    groupedRecords[record.pin].push(record);
+    groupedRecords[record.pin].records.push(record);
   });
 
   return (
     <div className="time-card">
       <h2>Today's Time Cards</h2>
-      {Object.keys(groupedRecords).map((pin, index) => (
+      {Object.entries(groupedRecords).map(([pin, data], index) => (
         <div key={index}>
-          <h3>PIN: {pin}</h3>
+          <h3>{data.name} - {pin}</h3>
           <table>
             <thead>
               <tr>
@@ -35,7 +36,7 @@ const TimeCard: React.FC<TimeCardProps> = ({ records }) => {
               </tr>
             </thead>
             <tbody>
-              {groupedRecords[pin].map((record, idx) => (
+              {data.records.map((record, idx) => (
                 <tr key={idx}>
                   <td>{record.action}</td>
                   <td>{record.time}</td>
