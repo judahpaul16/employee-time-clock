@@ -95,7 +95,7 @@ body {
     display: inline-block;
     width: 30%;
     margin-inline: 1em;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .time-card table {
