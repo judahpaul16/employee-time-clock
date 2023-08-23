@@ -13,7 +13,7 @@ const App: React.FC = () => {
       setCurrentTime(new Date().toLocaleString());
     }, 1000);
 
-    fetch('/records')
+    fetch('/get-records')
       .then((response) => response.json())
       .then((data) => setTimeCardRecords(data))
       .catch((error) => console.error('Error fetching records:', error));
@@ -54,11 +54,19 @@ const App: React.FC = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ pin, action: record.action, time: record.time })
     })
-    .then((response) => response.json())
-    .then((data) => {
-      setTimeCardRecords([...timeCardRecords, { id: data.id, name: data.name, pin, action: record.action, time: record.time }]);
-    })
-    .catch((error) => console.error('Error adding record:', error));
+      .then((response) => {
+        if (!response.ok) {
+          // Log the response text if the response status is not OK
+          return response.text().then((text) => Promise.reject(text));
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setTimeCardRecords([...timeCardRecords, { id: data.id, name: data.name, pin, action: record.action, time: record.time }]);
+      })
+      .catch((error) => {
+        console.error('Error adding record:', error);
+      });    
 
     setPin('');
   };

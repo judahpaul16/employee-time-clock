@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 const db = new Datastore({ filename: './dist/database.db', autoload: true });
 
 // Endpoint to get records
-app.get('/records', (req, res) => {
+app.get('/get-records', (req, res) => {
     db.find({}, (err, rows) => {
       if (err) return res.status(500).send(err);
       res.json(rows);
