@@ -17,7 +17,7 @@ const port = 3001;
 app.use(bodyParser.json());
 
 // Connect to SQLite database
-const db = new sqlite3.Database('./database.db', (err) => {
+const db = new sqlite3.Database('./dist/database.db', (err) => {
     if (err) return console.error(err.message);
     console.log('Connected to the SQLite database.');
 });
@@ -70,10 +70,10 @@ app.post('/record', (req, res) => {
 if (process.env.NODE_ENV === 'production') {
     // Export the app for production (e.g., when using Phusion Passenger)
     module.exports = app;
-  } else {
+} else {
     // Start the server for local development and testing
     const port = 3001;
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);
     });
-  }
+}
