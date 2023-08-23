@@ -67,7 +67,13 @@ app.post('/record', (req, res) => {
     });
 });
 
-// Starting the server
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+if (process.env.NODE_ENV === 'production') {
+    // Export the app for production (e.g., when using Phusion Passenger)
+    module.exports = app;
+  } else {
+    // Start the server for local development and testing
+    const port = 3001;
+    app.listen(port, () => {
+      console.log(`Server is running on http://localhost:${port}`);
+    });
+  }
