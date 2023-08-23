@@ -6,18 +6,14 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors());
-const corsOptions = {
-    optionsSuccessStatus: 204,
-};
-
+const corsOptions = {optionsSuccessStatus: 204};
 app.use(cors(corsOptions));
-
 const port = 3001;
-
 app.use(bodyParser.json());
+const dbPath = path.join(__dirname, 'dist', 'database.db');
 
 // Create the database
-const db = new Datastore({ filename: './dist/database.db', autoload: true });
+const db = new Datastore({ filename: dbPath, autoload: true });
 
 // Route to get records
 app.get('/get-records', (req, res) => {
