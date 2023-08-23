@@ -13,7 +13,7 @@
     "sqlite3": "^5.1.6"
   },
   "scripts": {
-    "start": "npm run build && node ./server.js",
+    "start": "npm run build && node ./app.js",
     "build": "rimraf ./dist && webpack --mode production",
     "serve": "npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
