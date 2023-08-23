@@ -1,12 +1,13 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
+const path = require('path');
 const cors = require('cors');
 
 const app = express();
 app.use(cors());
 const corsOptions = {
-    origin: 'http://localhost:8081', // only allow this origin
+    origin: 'http://localhost:8081',
     optionsSuccessStatus: 204,
   };
   
@@ -41,26 +42,33 @@ app.get('/records', (req, res) => {
   });
 });
 
+
+app.use(express.static(path.join(__dirname, 'dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
+});
+
 // Endpoint to add record
 app.post('/record', (req, res) => {
-    const { pin, action, time } = req.body;
-  
-    // Get the name associated with the PIN
-    db.get('SELECT name FROM records WHERE pin = ?', [pin], (err, row) => {
+  const { pin, action, time } = req.body;
+
+  // Get the name associated with the PIN
+  db.get('SELECT name FROM records WHERE pin = ?', [pin], (err, row) => {
+    if (err) return res.status(500).send(err);
+
+    const name = row ? row.name : 'Unknown';
+
+    // Insert the new record
+    db.run('INSERT INTO records (name, pin, action, time) VALUES (?, ?, ?, ?)', [name, pin, action, time], function(err) {
       if (err) return res.status(500).send(err);
-  
-      const name = row ? row.name : 'Unknown';
-  
-      // Insert the new record
-      db.run('INSERT INTO records (name, pin, action, time) VALUES (?, ?, ?, ?)', [name, pin, action, time], function(err) {
-        if (err) return res.status(500).send(err);
-        
-        // Return the new record ID and name
-        res.status(201).json({ id: this.lastID, name });
-      });
+      
+      // Return the new record ID and name
+      res.status(201).json({ id: this.lastID, name });
     });
   });
-  
+});
+
 // Starting the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
