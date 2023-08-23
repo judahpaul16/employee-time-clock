@@ -13,7 +13,7 @@ const App: React.FC = () => {
       setCurrentTime(new Date().toLocaleString());
     }, 1000);
 
-    fetch('http://localhost:3001/records')
+    fetch('/records')
       .then((response) => response.json())
       .then((data) => setTimeCardRecords(data))
       .catch((error) => console.error('Error fetching records:', error));
@@ -49,7 +49,7 @@ const App: React.FC = () => {
     }
 
     const record = { action: selectedAction.charAt(0).toUpperCase() + selectedAction.slice(1), time: currentTime };
-    fetch('http://localhost:3001/record', {
+    fetch('/record', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ pin, action: record.action, time: record.time })

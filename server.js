@@ -9,18 +9,18 @@ app.use(cors());
 const corsOptions = {
     origin: 'http://localhost:8081',
     optionsSuccessStatus: 204,
-  };
-  
-  app.use(cors(corsOptions));
-  
+};
+
+app.use(cors(corsOptions));
+
 const port = 3001;
 
 app.use(bodyParser.json());
 
 // Connect to SQLite database
 const db = new sqlite3.Database('./database.db', (err) => {
-  if (err) return console.error(err.message);
-  console.log('Connected to the SQLite database.');
+    if (err) return console.error(err.message);
+    console.log('Connected to the SQLite database.');
 });
 
 db.run(`CREATE TABLE IF NOT EXISTS records (
@@ -29,47 +29,46 @@ db.run(`CREATE TABLE IF NOT EXISTS records (
     pin TEXT NOT NULL,
     action TEXT NOT NULL,
     time TEXT NOT NULL
-  )`, (err) => {
+)`, (err) => {
     if (err) return console.log(err);
     console.log('Table created or already exists.');
 });
 
 // Endpoint to get records
 app.get('/records', (req, res) => {
-  db.all('SELECT * FROM records', [], (err, rows) => {
-    if (err) return res.status(500).send(err);
-    res.json(rows);
-  });
+    db.all('SELECT * FROM records', [], (err, rows) => {
+        if (err) return res.status(500).send(err);
+        res.json(rows);
+    });
 });
-
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/index.html'));
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
 // Endpoint to add record
 app.post('/record', (req, res) => {
-  const { pin, action, time } = req.body;
+    const { pin, action, time } = req.body;
 
-  // Get the name associated with the PIN
-  db.get('SELECT name FROM records WHERE pin = ?', [pin], (err, row) => {
-    if (err) return res.status(500).send(err);
+    // Get the name associated with the PIN
+    db.get('SELECT name FROM records WHERE pin = ?', [pin], (err, row) => {
+        if (err) return res.status(500).send(err);
 
-    const name = row ? row.name : 'Unknown';
+        const name = row ? row.name : 'Unknown';
 
-    // Insert the new record
-    db.run('INSERT INTO records (name, pin, action, time) VALUES (?, ?, ?, ?)', [name, pin, action, time], function(err) {
-      if (err) return res.status(500).send(err);
-      
-      // Return the new record ID and name
-      res.status(201).json({ id: this.lastID, name });
+        // Insert the new record
+        db.run('INSERT INTO records (name, pin, action, time) VALUES (?, ?, ?, ?)', [name, pin, action, time], function(err) {
+            if (err) return res.status(500).send(err);
+
+            // Return the new record ID and name
+            res.status(201).json({ id: this.lastID, name });
+        });
     });
-  });
 });
 
 // Starting the server
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on http://localhost:${port}`);
 });
