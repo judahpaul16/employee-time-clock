@@ -3,6 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src',
+  cache: {
+    type: 'filesystem', // Enable filesystem caching
+  },
   module: {
     rules: [
       {
