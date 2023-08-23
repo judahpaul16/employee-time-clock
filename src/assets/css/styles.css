@@ -19,6 +19,10 @@ body {
     width: 100%;
 }
 
+.time-clock-container:focus {
+    outline: none;
+}  
+
 .main-container {
     display: inline-flex;
     align-items: center;
