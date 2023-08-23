@@ -3,9 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src',
-  cache: {
-    type: 'filesystem', // Enable filesystem caching
-  },
   module: {
     rules: [
       {
@@ -41,6 +38,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     clean: true,
     publicPath: '/',
+    hashFunction: 'sha256',
   },
   devServer: {
     port: 8081,
