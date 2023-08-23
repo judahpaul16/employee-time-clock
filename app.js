@@ -19,21 +19,22 @@ app.use(bodyParser.json());
 // Create the database
 const db = new Datastore({ filename: './dist/database.db', autoload: true });
 
-// Endpoint to get records
+// Route to get records
 app.get('/get-records', (req, res) => {
     db.find({}, (err, rows) => {
-      if (err) return res.status(500).send(err);
+      if (err) return res.json({ error: err });
       res.json(rows);
     });
 });  
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
+// Main route
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
-// Endpoint to add record
+// Route to add record
 app.post('/add-record', (req, res) => {
     const { pin, action, time } = req.body;
   
