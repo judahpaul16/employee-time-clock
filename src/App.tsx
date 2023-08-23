@@ -49,7 +49,7 @@ const App: React.FC = () => {
     }
 
     const record = { action: selectedAction.charAt(0).toUpperCase() + selectedAction.slice(1), time: currentTime };
-    fetch('/record', {
+    fetch('/add-record', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ pin, action: record.action, time: record.time })

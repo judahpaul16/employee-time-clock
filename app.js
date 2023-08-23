@@ -34,7 +34,7 @@ app.get('*', (req, res) => {
 });
 
 // Endpoint to add record
-app.post('/record', (req, res) => {
+app.post('/add-record', (req, res) => {
     const { pin, action, time } = req.body;
   
     // Find the name associated with the PIN
@@ -58,7 +58,6 @@ if (process.env.NODE_ENV === 'production') {
     module.exports = app;
 } else {
     // Start the server for local development and testing
-    const port = 3001;
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);
     });
