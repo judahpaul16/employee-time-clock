@@ -218,8 +218,9 @@ const App: React.FC = () => {
         Login as an administrator to see and download time cards</button>}
       {isLoggedIn && <hr></hr>}
       {isLoggedIn && <TimeCard records={timeCardRecords} />}
+      {!isOverlayShowing && isLoggedIn && <button id="downloadButton" onClick={() => { window.open('/download-records'); }}>Download All Records</button>}
+      {!isOverlayShowing && isLoggedIn && <button id="addEmployeeButton" onClick={() => { setShowAddEmployee(true) }}>Add New Employee</button>}
       {!isOverlayShowing && isLoggedIn && <button id="logoutButton" onClick={() => { setShowLoginButton(true); setIsLoggedIn(false); }}>Logout</button>}
-      {!isOverlayShowing && isLoggedIn && <button id="addEmployeeButton" onClick={() => { setShowAddEmployee(true) }}>New Employee</button>}
     </div>
   );
 };

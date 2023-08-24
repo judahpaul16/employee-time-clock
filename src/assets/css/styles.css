@@ -179,7 +179,7 @@ hr {
 
 #logoutButton {
     position: fixed;
-    top: 0;
+    top: 8em;
     left: 0;
     margin: 1em;
     padding: 1em;
@@ -209,6 +209,23 @@ hr {
 
 #addEmployeeButton:hover {
     background-color: #007bff;
+}
+
+#downloadButton {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 1em;
+    padding: 1em;
+    color: white;
+    font-size: 12pt;
+    border: none;
+    border-radius: 5px;
+    background-color: #5e83ff;
+}
+
+#downloadButton:hover {
+    background-color: #3a5bff;
 }
 
 .close-btn {
