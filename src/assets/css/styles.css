@@ -170,11 +170,11 @@ hr {
     font-size: 12pt;
     border: none;
     border-radius: 5px;
-    background-color: maroon;
+    background-color: #ff7676;
 }
 
 #loginButton:hover {
-    background-color: #490000;
+    background-color: #ff0000;
 }
 
 #logoutButton {
@@ -187,11 +187,11 @@ hr {
     font-size: 12pt;
     border: none;
     border-radius: 5px;
-    background-color: maroon;
+    background-color: #ff7676;
 }
 
 #logoutButton:hover {
-    background-color: #490000;
+    background-color: #ff0000;
 }
 
 #adminText {

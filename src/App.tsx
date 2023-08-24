@@ -156,7 +156,7 @@ const App: React.FC = () => {
       {showLoginButton && !isLoggedIn && <button id="loginButton" onClick={() => setShowLogin(true)}>Login as an administrator to see and download time cards</button>}
       {isLoggedIn && <hr></hr>}
       {isLoggedIn && <TimeCard records={timeCardRecords} />}
-      {isLoggedIn && <button id="logoutButton" onClick={() => { setShowLoginButton(true); setIsLoggedIn(false); }}>Logout:&nbsp;<small>in as</small><span id="adminText">&nbsp;administrator</span></button>}
+      {isLoggedIn && <button id="logoutButton" onClick={() => { setShowLoginButton(true); setIsLoggedIn(false); }}>Logout</button>}
     </div>
   );
 };
