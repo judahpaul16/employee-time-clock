@@ -139,7 +139,7 @@ app.post('/add-user', (req, res) => {
         // Return the new user ID and login token
         res.status(201).json({ id: newUser._id, token: loginToken });
     });
-  });  
+});
 
 if (process.env.NODE_ENV === 'production') {
     // Export the app for production (e.g., when using Phusion Passenger)

@@ -1,4 +1,3 @@
-import { response } from 'express';
 import React, { useState } from 'react';
 
 interface CreateAdminProps {
@@ -47,6 +46,7 @@ const CreateAdmin: React.FC<CreateAdminProps> = ({ onCreateSuccess }) => {
   return (
     <div className="login-overlay">
       <div className="login-container">
+        <button className="close-btn" onClick={onCreateSuccess}>X</button>
         <h1 id="createAcc">Create an Admin Account</h1>
         <small>This app requires an admin account.</small>
         <div id="username">

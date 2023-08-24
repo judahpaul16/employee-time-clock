@@ -123,7 +123,7 @@ hr {
     margin: auto;
 }
 
-.login-overlay {
+.login-overlay, .employee-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -135,16 +135,16 @@ hr {
     justify-content: center;
   }
   
-.login-container {
+.login-container, .employee-container {
     background-color: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.login-container > div {
+.login-container > div, .employee-container > div{
     margin-bottom: 1em;
 }
-.login-container > button {
+.login-container > button, .employee-container > button {
     margin: 0 0.5em;
     padding: 0.5em;
     border: none;
@@ -154,7 +154,7 @@ hr {
     cursor: pointer;
     transition: background-color 0.3s;
 }
-.login-container > button:hover {
+.login-container > button:hover, .employee-container > button:hover {
     background-color: #007bff;
 }
   
@@ -190,8 +190,35 @@ hr {
     background-color: #ff7676;
 }
 
-#logoutButton:hover {
+#logoutButton:hover{
     background-color: #ff0000;
+}
+
+#addEmployeeButton {
+    position: fixed;
+    top: 4em;
+    left: 0;
+    margin: 1em;
+    padding: 1em;
+    color: white;
+    font-size: 12pt;
+    border: none;
+    border-radius: 5px;
+    background-color: #3ca7ff;
+}
+
+#addEmployeeButton:hover {
+    background-color: #007bff;
+}
+
+.close-btn {
+    position: relative;
+    float: right;
+    background-color: transparent !important;
+    color: #b1b1b1 !important;
+    padding-inline: 0.75em !important;
+    border: 2px solid #ebebeb !important;
+    font-size: 14px;
 }
 
 #adminText {

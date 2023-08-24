@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Keypad from './components/Keypad';
 import TimeCard from './components/TimeCard';
 import CreateAdmin from './components/CreateAdmin';
+import AddEmployee from './components/AddEmployee';
 import Login from './components/Login';
 
 const App: React.FC = () => {
@@ -12,6 +13,7 @@ const App: React.FC = () => {
   const [showCreateAdmin, setShowCreateAdmin] = useState(false); // State to control showing createAdmin
   const [pin, setPin] = useState(''); // State to store the PIN
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleString()); // State to store the current time
+  const [showAddEmployee, setShowAddEmployee] = useState(false);
   // State to store the time card records
   const [timeCardRecords, setTimeCardRecords] = useState<{ id: number; name: string; pin: string; action: string; time: string }[]>([]);
 
@@ -174,12 +176,19 @@ const App: React.FC = () => {
     setIsLoggedIn(true);
   };
 
+  const onAddEmployeeSuccess = () => {
+    setShowAddEmployee(false);
+  };  
+
   { !showCreateAdmin && !showLogin && timeClockContainerRef.current?.focus(); }
+
+  const isOverlayShowing = showCreateAdmin || showLogin || showAddEmployee;
 
   // Return the JSX
   return (
     <div className="time-clock-container" ref={timeClockContainerRef} onKeyDown={handleKeyDown} tabIndex={0}>
       <Login showLogin={showLogin} onLoginSuccess={onLoginSuccess} />
+      {showAddEmployee && isLoggedIn && <AddEmployee onAddSuccess={onAddEmployeeSuccess} />}
       {showCreateAdmin && !isLoggedIn && <CreateAdmin onCreateSuccess={onCreateAdminSuccess} />}
       <h1>Employee Time Clock</h1>
       <div id="currentTime">Current Time: {currentTime}</div>
@@ -201,7 +210,8 @@ const App: React.FC = () => {
         Login as an administrator to see and download time cards</button>}
       {isLoggedIn && <hr></hr>}
       {isLoggedIn && <TimeCard records={timeCardRecords} />}
-      {isLoggedIn && <button id="logoutButton" onClick={() => { setShowLoginButton(true); setIsLoggedIn(false); }}>Logout</button>}
+      {!isOverlayShowing && isLoggedIn && <button id="logoutButton" onClick={() => { setShowLoginButton(true); setIsLoggedIn(false); }}>Logout</button>}
+      {!isOverlayShowing && isLoggedIn && <button id="addEmployeeButton" onClick={() => { setShowAddEmployee(true) }}>New Employee</button>}
     </div>
   );
 };

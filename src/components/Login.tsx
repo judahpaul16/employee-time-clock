@@ -28,6 +28,7 @@ const Login: React.FC<LoginProps> = ({ showLogin, onLoginSuccess }) => {
     showLogin && (
         <div className="login-overlay">
             <div className="login-container">
+            <button className="close-btn" onClick={onLoginSuccess}>X</button>
             <h1>Login</h1>
             <div>
                 <input
