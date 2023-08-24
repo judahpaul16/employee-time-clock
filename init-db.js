@@ -9,7 +9,7 @@ if (!fs.existsSync(dbPath)) {
   fs.writeFileSync(dbPath, '');
 }
 
-const db = new Datastore({ filename: dbPath });
+let db = new Datastore({ filename: dbPath, autoload: true });
 
 db.loadDatabase((err) => {
   if (err) {

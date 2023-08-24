@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 // Set up the database and run the server
 const dbPath = path.join(__dirname, 'dist', 'database.db');
 let db;
-if (process.env.NODE_ENV === 'development') {
+if (!fs.existsSync(dbPath)) {
   db = new Datastore({ filename: dbPath, autoload: true });
 } else {
   db = new Datastore({ filename: dbPath, autoload: false });
