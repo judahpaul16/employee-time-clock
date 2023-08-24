@@ -15,6 +15,14 @@ const App: React.FC = () => {
   // State to store the time card records
   const [timeCardRecords, setTimeCardRecords] = useState<{ id: number; name: string; pin: string; action: string; time: string }[]>([]);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date().toLocaleString());
+    }, 1000);
+  
+    return () => clearInterval(timer);
+  }, []);
+  
   // Effect to check if the user is logged in
   useEffect(() => {
     fetch('/is-logged-in')
