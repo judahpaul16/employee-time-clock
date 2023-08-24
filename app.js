@@ -18,8 +18,8 @@ const db = new Datastore({ filename: dbPath, autoload: true });
 // Route to get records
 app.get('/get-records', (req, res) => {
     db.find({}, (err, rows) => {
-      if (err) return res.json({ error: err });
-      res.json(rows);
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
     });
 });  
 
@@ -36,17 +36,17 @@ app.post('/add-record', (req, res) => {
   
     // Find the name associated with the PIN
     db.findOne({ pin }, (err, row) => {
-      if (err) return res.status(500).send(err);
-  
-      const name = row ? row.name : 'Unknown';
-  
-      // Insert the new record
-      db.insert({ name, pin, action, time }, (err, newRecord) => {
-        if (err) return res.status(500).send(err);
-  
-        // Return the new record ID and name
-        res.status(201).json({ id: newRecord._id, name });
-      });
+        if (err) return res.status(500).json({ error: err.message });
+    
+        const name = row ? row.name : 'Unknown';
+    
+        // Insert the new record
+        db.insert({ name, pin, action, time }, (err, newRecord) => {
+            if (err) return res.status(500).json({ error: err.message });
+    
+            // Return the new record ID and name
+            res.status(201).json({ id: newRecord._id, name });
+        });
     });
 });  
 
