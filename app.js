@@ -13,9 +13,12 @@ app.use(cors(corsOptions));
 const port = 3001;
 app.use(bodyParser.json());
 
-// Create the database
-const dbPath = path.join(__dirname, 'dist', 'database.db');
-const db = new Datastore({ filename: dbPath, autoload: true });
+
+if (process.env.NODE_ENV === 'development') {
+    // Create the database
+    const dbPath = path.join(__dirname, 'dist', 'database.db');
+    const db = new Datastore({ filename: dbPath, autoload: true });
+}
 
 // Route to get records
 app.get('/get-records', (req, res) => {
@@ -23,7 +26,7 @@ app.get('/get-records', (req, res) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(rows);
     });
-});  
+});
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
