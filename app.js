@@ -14,8 +14,6 @@ app.use(cors(corsOptions));
 const port = 3001;
 app.use(bodyParser.json());
 
-console.log('Database loaded successfully.');
-
 // Route to get records
 app.get('/get-records', (req, res) => {
     db.find({}, (err, rows) => {
