@@ -13,7 +13,7 @@ const App: React.FC = () => {
       setCurrentTime(new Date().toLocaleString());
     }, 1000);
 
-    fetch('/get-records')
+    fetch('/get-records?_=' + new Date().getTime())
       .then((response) => response.json())
       .then((data) => setTimeCardRecords(data))
       .catch((error) => console.error('Error fetching records:', error));
