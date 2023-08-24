@@ -1,6 +1,7 @@
 const express = require('express');
 const Datastore = require('nedb');
 const bodyParser = require('body-parser');
+const db = require('./init-db');
 const path = require('path');
 const cors = require('cors');
 const fs = require('fs');
@@ -13,14 +14,6 @@ app.use(cors(corsOptions));
 const port = 3001;
 app.use(bodyParser.json());
 
-// Set up the database and run the server
-const dbPath = path.join(__dirname, 'dist', 'database.db');
-let db;
-if (!fs.existsSync(dbPath)) {
-  db = new Datastore({ filename: dbPath, autoload: true });
-} else {
-  db = new Datastore({ filename: dbPath, autoload: false });
-}
 // Load the database and ensure it's ready before starting the app
 db.loadDatabase((err) => {
     if (err) {
@@ -72,7 +65,7 @@ db.loadDatabase((err) => {
     } else {
         // Start the server for local development and testing
         app.listen(port, () => {
-        console.log(`Server is running on http://localhost:${port}`);
+            console.log(`Server is running on http://localhost:${port}`);
         });
     }
 });

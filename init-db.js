@@ -2,11 +2,12 @@ const Datastore = require('nedb');
 const path = require('path');
 const fs = require('fs');
 
-const dbPath = path.join(__dirname, 'dist', 'database.db');
+let dirPath = path.join(__dirname, 'dist');
+let dbPath = path.join(__dirname, 'dist', 'database.db');
 
 // Check if the database file exists
-if (!fs.existsSync(dbPath)) {
-  fs.writeFileSync(dbPath, '');
+if (!fs.existsSync(dirPath)) {
+  fs.mkdirSync(dirPath);
 }
 
 let db = new Datastore({ filename: dbPath, autoload: true });
@@ -18,3 +19,5 @@ db.loadDatabase((err) => {
     console.log('Database initialized successfully.');
   }
 });
+
+module.exports = db;
