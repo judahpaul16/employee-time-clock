@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const { usersDB, recordsDB } = require('./init-db.js');
+const json2csv = require('json2csv').parse;
 const path = require('path');
 const cors = require('cors');
 const session = require('express-session');
@@ -72,7 +73,6 @@ app.get('/download-records', (req, res) => {
         // Convert records to CSV
         const fields = ['name', 'pin', 'action', 'time'];
         const opts = { fields };
-        const json2csv = require('json2csv').parse;
         const csv = json2csv(rows, opts);
         // Set the response header
         res.setHeader('Content-disposition', 'attachment; filename=records.csv');
