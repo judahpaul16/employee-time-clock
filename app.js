@@ -13,12 +13,10 @@ app.use(cors(corsOptions));
 const port = 3001;
 app.use(bodyParser.json());
 
+// Set up the database and run the server
 const dbPath = path.join(__dirname, 'dist', 'database.db');
-if (process.env.NODE_ENV === 'development') {
-    const db = new Datastore({ filename: dbPath, autoload: true });
-}
-
-const db = new Datastore({ filename: dbPath });
+if (process.env.NODE_ENV === 'development') {const db = new Datastore({ filename: dbPath, autoload: true });}
+const db = new Datastore({ filename: dbPath, autoload: false });
 // Load the database and ensure it's ready before starting the app
 db.loadDatabase((err) => {
     if (err) {
