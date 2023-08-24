@@ -43,27 +43,43 @@ app.get('/get-records', (req, res) => {
       if (err) return res.status(500).json({ error: err.message });
       res.json(rows);
     });
-  });
-  
-  // Route to get all users
-  app.get('/get-users', (req, res) => {
+});
+
+// Route to get all users
+app.get('/get-users', (req, res) => {
     usersDB.find({}, (err, rows) => {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json(rows);
-    });
-  });
-  
-  // Route to get user records by user ID
-  app.get('/get-user-records', (req, res) => {
-    const { id } = req.query;
-    usersDB.findOne({ _id: id }, (err, user) => {
-      if (err) return res.status(500).json({ error: err.message });
-      recordsDB.find({ pin: user.pin }, (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(rows);
-      });
     });
-  });
+});
+
+// Route to get user records by user ID
+app.get('/get-user-records', (req, res) => {
+    const { id } = req.query;
+    usersDB.findOne({ _id: id }, (err, user) => {
+        if (err) return res.status(500).json({ error: err.message });
+        recordsDB.find({ pin: user.pin }, (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+        });
+    });
+});
+
+// Route to download records as CSV
+app.get('/download-records', (req, res) => {
+    recordsDB.find({}, (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        // Convert records to CSV
+        const fields = ['name', 'pin', 'action', 'time'];
+        const opts = { fields };
+        const json2csv = require('json2csv').parse;
+        const csv = json2csv(rows, opts);
+        // Set the response header
+        res.setHeader('Content-disposition', 'attachment; filename=records.csv');
+        res.set('Content-Type', 'text/csv');
+        res.status(200).send(csv);
+    });
+});
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
