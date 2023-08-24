@@ -3,13 +3,21 @@ const Datastore = require('nedb');
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
+const fs = require('fs');
 
+// Create the Express app
 const app = express();
 app.use(cors());
 const corsOptions = {optionsSuccessStatus: 204};
 app.use(cors(corsOptions));
 const port = 3001;
 app.use(bodyParser.json());
+
+// Create the dist directory if it doesn't exist
+const dirPath = path.join(__dirname, 'dist');
+if (!fs.existsSync(dirPath)) {
+  fs.mkdirSync(dirPath, { recursive: true });
+}
 const dbPath = path.join(__dirname, 'dist', 'database.db');
 
 // Create the database
