@@ -14,11 +14,8 @@ const port = 3001;
 app.use(bodyParser.json());
 
 // Create the dist directory if it doesn't exist
-const dirPath = path.join(__dirname, 'dist');
-if (!fs.existsSync(dirPath)) {
-  fs.mkdirSync(dirPath, { recursive: true });
-}
 const dbPath = path.join(__dirname, 'dist', 'database.db');
+if (!fs.existsSync(dbPath)) fs.mkdirSync(dirPath, { recursive: true });
 
 // Create the database
 const db = new Datastore({ filename: dbPath, autoload: true });
