@@ -12,12 +12,4 @@ if (!fs.existsSync(dirPath)) {
 
 let db = new Datastore({ filename: dbPath, autoload: true });
 
-db.loadDatabase((err) => {
-  if (err) {
-    console.error('Error loading database:', err);
-  } else {
-    console.log('Database initialized successfully.');
-  }
-});
-
 module.exports = db;
