@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
 interface CreateAdminProps {
-  onCreateSuccess: () => void;
+    onCreateSuccess: () => void;
+    onCloseOverlay: () => void;
 }
 
-const CreateAdmin: React.FC<CreateAdminProps> = ({ onCreateSuccess }) => {
+const CreateAdmin: React.FC<CreateAdminProps> = ({ onCreateSuccess, onCloseOverlay }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState(''); // Confirmation password state
@@ -46,7 +47,7 @@ const CreateAdmin: React.FC<CreateAdminProps> = ({ onCreateSuccess }) => {
   return (
     <div className="login-overlay">
       <div className="login-container">
-        <button className="close-btn" onClick={onCreateSuccess}>X</button>
+        <button className="close-btn" onClick={onCloseOverlay}>X</button>
         <h1 id="createAcc">Create an Admin Account</h1>
         <small>This app requires an admin account.</small>
         <div id="username">

@@ -184,6 +184,12 @@ const App: React.FC = () => {
     showMessageToUser('Employee added successfully', 'success');
   };
 
+  const onCloseOverlay = () => {
+    setShowLogin(false);
+    setShowCreateAdmin(false);
+    setShowAddEmployee(false);
+  };
+
   // Focus on the time clock container when the app first loads
   useEffect(() => {
     if (!showCreateAdmin && !showLogin) {
@@ -195,9 +201,9 @@ const App: React.FC = () => {
   // Return the JSX
   return (
     <div className="time-clock-container" ref={timeClockContainerRef} onKeyDown={handleKeyDown} tabIndex={0}>
-      <Login showLogin={showLogin} onLoginSuccess={onLoginSuccess} />
-      {showAddEmployee && isLoggedIn && <AddEmployee onAddSuccess={onAddEmployeeSuccess} />}
-      {showCreateAdmin && !isLoggedIn && <CreateAdmin onCreateSuccess={onCreateAdminSuccess} />}
+      <Login showLogin={showLogin} onLoginSuccess={onLoginSuccess} onCloseOverlay={onCloseOverlay} />
+      {showAddEmployee && isLoggedIn && <AddEmployee onAddSuccess={onAddEmployeeSuccess} onCloseOverlay={onCloseOverlay} />}
+      {showCreateAdmin && !isLoggedIn && <CreateAdmin onCreateSuccess={onCreateAdminSuccess} onCloseOverlay={onCloseOverlay} />}
       <h1>Employee Time Clock</h1>
       <div id="currentTime">Current Time: {currentTime}</div>
       <div className="pin-entry">

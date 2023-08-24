@@ -4,9 +4,10 @@ import axios from 'axios';
 interface LoginProps {
     showLogin: boolean;
     onLoginSuccess: () => void;
+    onCloseOverlay: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ showLogin, onLoginSuccess }) => {
+const Login: React.FC<LoginProps> = ({ showLogin, onLoginSuccess, onCloseOverlay }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -28,7 +29,7 @@ const Login: React.FC<LoginProps> = ({ showLogin, onLoginSuccess }) => {
     showLogin && (
         <div className="login-overlay">
             <div className="login-container">
-            <button className="close-btn" onClick={onLoginSuccess}>X</button>
+            <button className="close-btn" onClick={onCloseOverlay}>X</button>
             <h1>Login</h1>
             <div>
                 <input

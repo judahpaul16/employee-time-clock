@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 
 interface AddEmployeeProps {
     onAddSuccess: () => void;
+    onCloseOverlay: () => void;
   }
   
-  const AddEmployee: React.FC<AddEmployeeProps> = ({ onAddSuccess }) => {
+  const AddEmployee: React.FC<AddEmployeeProps> = ({ onAddSuccess, onCloseOverlay }) => {
     const [name, setName] = useState('');
     const [pin, setPin] = useState('');
     const [error, setError] = useState('');
@@ -42,7 +43,7 @@ interface AddEmployeeProps {
     return (
       <div className="employee-overlay">
         <div className="employee-container">
-            <button className="close-btn" onClick={onAddSuccess}>X</button>
+            <button className="close-btn" onClick={onCloseOverlay}>X</button>
           <h1>Add an Employee</h1>
           <div>
             <input
