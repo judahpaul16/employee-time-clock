@@ -97,8 +97,10 @@ const App: React.FC = () => {
   }, [lastInteractionTime]); // Re-run the effect when the last interaction time changes
 
   const handleKeyPress = (key: string) => {
-    setPin(pin + key);
-  };
+    if (pin.length < 6 && key.trim() !== '' && !isNaN(Number(key))) {
+      setPin(pin + key);
+    }
+  };  
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Check if the key is a number

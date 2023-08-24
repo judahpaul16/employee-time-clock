@@ -12,7 +12,7 @@ interface AddEmployeeProps {
     const [error, setError] = useState('');
   
     const MIN_NAME_LENGTH = 2; 
-    const PIN_LENGTH = 4;
+    const PIN_LENGTH = 6;
   
     const handleAddEmployee = async () => {
       if (name.length < MIN_NAME_LENGTH) {
@@ -56,7 +56,7 @@ interface AddEmployeeProps {
           <div>
             <input
               type="text"
-              placeholder="PIN (4 digits)"
+              placeholder="PIN (6 digits)"
               value={pin}
               onChange={(e) => setPin(e.target.value)}
               maxLength={PIN_LENGTH}

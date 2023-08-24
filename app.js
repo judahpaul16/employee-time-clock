@@ -145,29 +145,38 @@ app.get('/is-logged-in', (req, res) => {
 // Route to add user
 app.post('/add-admin', (req, res) => {
     const { username, password } = req.body;
-    // Hash the password
-    const hashedPassword = bcrypt.hashSync(password, 8);
-    // Generate a login token
-    const loginToken = crypto.randomBytes(16).toString('hex');
-    // Insert the new user
-    usersDB.insert({ username, password: hashedPassword, loginToken: loginToken }, (err, newUser) => {
+    // Check if username already exists
+    usersDB.findOne({ username }, (err, existingUser) => {
         if (err) return res.status(500).json({ error: err.message });
-        // Return the new user ID and login token
-        res.status(201).json({ id: newUser._id, token: loginToken });
+        if (existingUser) return res.status(400).json({ error: 'Username already exists' });
+        // Hash the password
+        const hashedPassword = bcrypt.hashSync(password, 8);
+        // Generate a login token
+        const loginToken = crypto.randomBytes(16).toString('hex');
+        // Insert the new user
+        usersDB.insert({ username, password: hashedPassword, loginToken: loginToken }, (err, newUser) => {
+            if (err) return res.status(500).json({ error: err.message });
+            // Return the new user ID and login token
+            res.status(201).json({ id: newUser._id, token: loginToken });
+        });
     });
 });
 
 // Route to add employee
 app.post('/add-employee', (req, res) => {
     const { name, pin } = req.body;
-    // Logic to add employee to the database
-    usersDB.insert({ name, pin }, (err, newEmployee) => {
+    // Check if PIN already exists
+    usersDB.findOne({ pin }, (err, existingEmployee) => {
         if (err) return res.status(500).json({ error: err.message });
-        // Return the new employee ID
-        res.status(201).json({ id: newEmployee._id });
+        if (existingEmployee) return res.status(400).json({ error: 'PIN already exists' });
+        // Logic to add employee to the database
+        usersDB.insert({ name, pin }, (err, newEmployee) => {
+            if (err) return res.status(500).json({ error: err.message });
+            // Return the new employee ID
+            res.status(201).json({ id: newEmployee._id });
+        });
     });
 });
-
 
 if (process.env.NODE_ENV === 'production') {
     // Export the app for production (e.g., when using Phusion Passenger)

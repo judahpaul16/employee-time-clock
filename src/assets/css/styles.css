@@ -158,7 +158,7 @@ hr {
     background-color: #007bff;
 }
   
-.login-error {
+.login-error, .employee-error {
     color: red;
 }
   
