@@ -198,3 +198,18 @@ hr {
     color: #3ca7ff;
     font-size: small;
 }
+
+input[type="text"], input[type="password"] {
+    width: 70%;
+    padding: 0.5em;
+    border: solid gainsboro;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+#createAcc {
+    margin-bottom: 0.25em;
+}
+#username {
+    margin-top: 0.5em;
+}
