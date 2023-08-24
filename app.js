@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 // Create the dist directory if it doesn't exist
 const dbPath = path.join(__dirname, 'dist', 'database.db');
-if (!fs.existsSync(dbPath)) fs.mkdirSync(dirPath, { recursive: true });
+if (!fs.existsSync(dbPath)) fs.mkdirSync(dbPath, { recursive: true });
 
 // Create the database
 const db = new Datastore({ filename: dbPath, autoload: true });
@@ -31,7 +31,7 @@ app.get('/get-records', (req, res) => {
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // Main route
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
