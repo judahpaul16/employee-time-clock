@@ -5,7 +5,6 @@ const fs = require('fs');
 let dirPath = path.join(__dirname, 'dist');
 let dbPath = path.join(__dirname, 'dist', 'database.db');
 
-// Check if the database file exists
 if (!fs.existsSync(dirPath)) {
   fs.mkdirSync(dirPath);
 }
