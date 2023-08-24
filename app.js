@@ -46,7 +46,7 @@ app.get('/get-records', (req, res) => {
   });
   
   // Route to get all users
-  app.get('/get-users', requireAdmin, (req, res) => {
+  app.get('/get-users', (req, res) => {
     usersDB.find({}, (err, rows) => {
       if (err) return res.status(500).json({ error: err.message });
       res.json(rows);
@@ -75,19 +75,24 @@ app.get('/', (req, res) => {
 // Route to add record
 app.post('/add-record', (req, res) => {
     const { pin, action, time } = req.body;
-    // Find the name associated with the PIN
-    recordsDB.findOne({ pin }, (err, row) => {
+    
+    // Check if a user with the provided PIN exists
+    usersDB.findOne({ pin }, (err, user) => {
+      if (err) return res.status(500).json({ error: err.message });
+      
+      if (!user) return res.status(400).json({ error: 'No user with this PIN' });
+  
+      // Find the name associated with the PIN
+      const name = user.name;
+      // Insert the new record
+      recordsDB.insert({ name, pin, action, time }, (err, newRecord) => {
         if (err) return res.status(500).json({ error: err.message });
-        const name = row ? row.name : 'Unknown';
-        // Insert the new record
-        recordsDB.insert({ name, pin, action, time }, (err, newRecord) => {
-            if (err) return res.status(500).json({ error: err.message });
-
-            // Return the new record ID and name
-            res.status(201).json({ id: newRecord._id, name });
-        });
+  
+        // Return the new record ID and name
+        res.status(201).json({ id: newRecord._id, name });
+      });
     });
-});
+});  
 
 // Route to login
 app.post('/login', (req, res) => {

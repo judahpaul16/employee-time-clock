@@ -30,17 +30,21 @@ const App: React.FC = () => {
       .then((data) => {
         setIsLoggedIn(data.isLoggedIn);
         if (!data.isLoggedIn) {
-          fetch('/get-records?=' + currentTime)
+          fetch('/get-users?=' + currentTime)
             .then((response) => response.json())
-            .then((records) => {
-              if (records.length === 0) {
+            .then((users) => {
+              if (users.length === 0) {
                 setShowCreateAdmin(true);
               } else {
-                setShowLoginButton(true);
-                setTimeCardRecords(records);
+                fetch('/get-records?=' + currentTime)
+                  .then((response) => response.json())
+                  .then((records) => {
+                    setShowLoginButton(true);
+                    setTimeCardRecords(records);
+                  })
+                  .catch((error) => console.error('Error checking records:', error));
               }
             })
-            .catch((error) => console.error('Error checking records:', error));
         }
       })
       .catch((error) => console.error('Error checking login status:', error));
@@ -96,7 +100,18 @@ const App: React.FC = () => {
     if (!isNaN(Number(e.key))) {
       handleKeyPress(e.key);
     }
+    // Check if the key is backspace or delete
+    if (e.key === 'Backspace' || e.key === 'Delete') {
+      handleBackspace();
+    }
   };
+  const handleBackspace = () => {
+    setPin(pin.slice(0, -1)); // Remove the last character from the PIN
+  };
+  const handleClear = () => {
+    setPin(''); // Clear the entire PIN
+  };
+  
 
   const handleActionClick = (selectedAction: 'clockIn' | 'clockOut' | 'startBreak' | 'endBreak') => {
     // Flash red and exit early if no PIN is entered
@@ -117,8 +132,7 @@ const App: React.FC = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          // Log the response text if the response status is not OK
-          return response.text().then((text) => Promise.reject(text));
+          return response.json().then((error) => Promise.reject(error));
         }
         return response.json();
       })
@@ -126,11 +140,27 @@ const App: React.FC = () => {
         setTimeCardRecords([...timeCardRecords, { id: data.id, name: data.name, pin, action: record.action, time: record.time }]);
       })
       .catch((error) => {
-        console.error('Error adding record:', error);
-      });    
-
-    setPin('');
+        console.error('Error adding record:', error.error);
+        showMessageToUser('Error adding record: ' + error.error);
+    });
   };
+
+  function showMessageToUser(message: string) {
+    const messageContainer = document.getElementById('message-container');
+    const errorMessage = document.createElement('p');
+    errorMessage.id = 'error-message';
+    errorMessage.textContent = message;
+    messageContainer?.appendChild(errorMessage);
+  
+    // Add the "show" class to make the message appear
+    errorMessage.classList.add('show');
+  
+    // Remove the message after 3 seconds
+    setTimeout(() => {
+      errorMessage.classList.add('hide');
+      setTimeout(() => { messageContainer?.removeChild(errorMessage); }, 1000);
+    }, 3000);
+  }  
 
   const onLoginSuccess = () => {
     setShowLogin(false);
@@ -153,7 +183,11 @@ const App: React.FC = () => {
       {showCreateAdmin && !isLoggedIn && <CreateAdmin onCreateSuccess={onCreateAdminSuccess} />}
       <h1>Employee Time Clock</h1>
       <div id="currentTime">Current Time: {currentTime}</div>
-      <div id="currentPin">Enter Your PIN: {pin}</div>
+      <div className="pin-entry">
+        <div id="currentPin">Enter Your PIN: {pin}</div>
+        <button className="clear-button" onClick={handleClear}>Clear</button>
+      </div>
+      <div id="message-container"></div>
       <div className="main-container">
         <Keypad onKeyPress={handleKeyPress} />
       </div>
