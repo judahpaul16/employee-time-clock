@@ -14,20 +14,8 @@ const port = 3001;
 app.use(bodyParser.json());
 
 // Create the database
-const dbPath = path.join(__dirname, 'database.db');
+const dbPath = path.join(__dirname, 'dist', 'database.db');
 const db = new Datastore({ filename: dbPath, autoload: true });
-db.loadDatabase((err) => {
-    if (err) {
-      console.error('Error loading database:', err);
-    } else {
-      console.log('Database loaded successfully.');
-    }
-});
-if (!fs.existsSync(dbPath)) {
-    fs.writeFileSync(dbPath, '', (err) => {
-      if (err) console.error('Error creating database file:', err);
-    });
-}
 
 // Route to get records
 app.get('/get-records', (req, res) => {

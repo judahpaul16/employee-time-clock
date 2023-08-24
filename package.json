@@ -13,8 +13,9 @@
     "serve-favicon": "^2.5.0"
   },
   "scripts": {
+    "init-db": "node ./init-db.js",
     "start": "rimraf ./dist && webpack --mode development && node ./app.js",
-    "build": "rimraf ./dist && webpack --mode production",
+    "build": "rimraf ./dist && webpack --mode production && npm run init-db",
     "serve": "npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
