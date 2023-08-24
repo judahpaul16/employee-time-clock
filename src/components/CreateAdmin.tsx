@@ -75,7 +75,7 @@ const CreateAdmin: React.FC<CreateAdminProps> = ({ onCreateSuccess, onCloseOverl
           />
         </div>
         {error && <div className="login-error">{error}</div>}
-        <button onClick={handleCreateAdmin}>Create Admin</button>
+        <button id="createAdmin" onClick={handleCreateAdmin}>Create Admin</button>
       </div>
     </div>
   );

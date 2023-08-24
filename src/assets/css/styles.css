@@ -184,14 +184,14 @@ hr {
     margin: 1em;
     padding: 1em;
     color: white;
-    font-size: 12pt;
+    font-size: 11pt;
     border: none;
     border-radius: 5px;
-    background-color: #ff7676;
+    background-color: #c5c5c5;
 }
 
 #logoutButton:hover{
-    background-color: #ff0000;
+    background-color: #a7a7a7;
 }
 
 #addEmployeeButton {
@@ -201,7 +201,7 @@ hr {
     margin: 1em;
     padding: 1em;
     color: white;
-    font-size: 12pt;
+    font-size: 11pt;
     border: none;
     border-radius: 5px;
     background-color: #3ca7ff;
@@ -218,14 +218,14 @@ hr {
     margin: 1em;
     padding: 1em;
     color: white;
-    font-size: 12pt;
+    font-size: 11pt;
     border: none;
     border-radius: 5px;
-    background-color: #5e83ff;
+    background-color: #ff7676;
 }
 
 #downloadButton:hover {
-    background-color: #3a5bff;
+    background-color: #ff0000;
 }
 
 .close-btn {

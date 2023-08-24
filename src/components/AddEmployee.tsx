@@ -63,7 +63,7 @@ interface AddEmployeeProps {
             />
           </div>
           {error && <div className="employee-error">{error}</div>}
-          <button onClick={handleAddEmployee}>Add Employee</button>
+          <button id="addEmployee" onClick={handleAddEmployee}>Add Employee</button>
         </div>
       </div>
     );

@@ -102,17 +102,34 @@ const App: React.FC = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Check if the key is a number
-    if (!isNaN(Number(e.key))) {
-      { !isOverlayShowing && handleKeyPress(e.key); }
+    if (!isNaN(Number(e.key)) && !isOverlayShowing) {
+      handleKeyPress(e.key);
     }
     // Check if the key is backspace or delete
     if (e.key === 'Backspace' || e.key === 'Delete') {
       handleBackspace();
     }
-  };
+    // Check if the key is Enter and an overlay is showing
+    if (e.key === 'Enter' && isOverlayShowing) {
+      if (showLogin) {
+        let loginButton = document.getElementById('login');
+        loginButton?.click();
+      }
+      if (showCreateAdmin) {
+        let createAdminButton = document.getElementById('createAdmin');
+        createAdminButton?.click();
+      }
+      if (showAddEmployee) {
+        let addEmployeeButton = document.getElementById('addEmployee');
+        addEmployeeButton?.click();
+      }
+    }
+  };  
+
   const handleBackspace = () => {
     setPin(pin.slice(0, -1)); // Remove the last character from the PIN
   };
+
   const handleClear = () => {
     setPin(''); // Clear the entire PIN
   };

@@ -48,7 +48,7 @@ const Login: React.FC<LoginProps> = ({ showLogin, onLoginSuccess, onCloseOverlay
                 />
             </div>
             {error && <div className="login-error">{error}</div>}
-            <button onClick={handleLogin}>Login</button>
+            <button id="login" onClick={handleLogin}>Login</button>
             </div>
         </div>
         )
