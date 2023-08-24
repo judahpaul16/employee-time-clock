@@ -13,10 +13,8 @@ app.use(cors(corsOptions));
 const port = 3001;
 app.use(bodyParser.json());
 
-
+const dbPath = path.join(__dirname, 'dist', 'database.db');
 if (process.env.NODE_ENV === 'development') {
-    // Create the database
-    const dbPath = path.join(__dirname, 'dist', 'database.db');
     const db = new Datastore({ filename: dbPath, autoload: true });
 }
 
