@@ -242,7 +242,8 @@ input[type="text"], input[type="password"] {
     margin-top: 0.5em;
 }
 
-#error-message {
+.error-message, .success-message,
+.warning-message, .info-message {
     position: fixed;
     bottom: 1em;
     right: 1em;
@@ -259,12 +260,26 @@ input[type="text"], input[type="password"] {
     transition: opacity 0.3s ease-in-out;
   }
   
-  #error-message.show {
+  .error-message.show, .success-message.show,
+  .warning-message.show, .info-message.show {
     opacity: 1;
   }
 
-  #error-message.hide {
+  .error-message.hide, .success-message.hide,
+  .warning-message.hide, .info-message.hide {
     opacity: 0;
+  }
+
+  .success-message {
+    background-color: #4CAF50;
+  }
+
+  .warning-message {
+    background-color: #ff9800;
+  }
+
+  .info-message {
+    background-color: #2196F3;
   }
 
   .clear-button {

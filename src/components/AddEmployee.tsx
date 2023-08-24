@@ -23,7 +23,7 @@ interface AddEmployeeProps {
         return;
       }
   
-      fetch('/add-user', {
+      fetch('/add-employee', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, pin })

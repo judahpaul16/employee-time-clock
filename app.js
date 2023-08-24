@@ -127,7 +127,7 @@ app.get('/is-logged-in', (req, res) => {
 });
 
 // Route to add user
-app.post('/add-user', (req, res) => {
+app.post('/add-admin', (req, res) => {
     const { username, password } = req.body;
     // Hash the password
     const hashedPassword = bcrypt.hashSync(password, 8);
@@ -140,6 +140,18 @@ app.post('/add-user', (req, res) => {
         res.status(201).json({ id: newUser._id, token: loginToken });
     });
 });
+
+// Route to add employee
+app.post('/add-employee', (req, res) => {
+    const { name, pin } = req.body;
+    // Logic to add employee to the database
+    usersDB.insert({ name, pin }, (err, newEmployee) => {
+        if (err) return res.status(500).json({ error: err.message });
+        // Return the new employee ID
+        res.status(201).json({ id: newEmployee._id });
+    });
+});
+
 
 if (process.env.NODE_ENV === 'production') {
     // Export the app for production (e.g., when using Phusion Passenger)

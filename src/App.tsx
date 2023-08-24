@@ -16,6 +16,7 @@ const App: React.FC = () => {
   const [showAddEmployee, setShowAddEmployee] = useState(false);
   // State to store the time card records
   const [timeCardRecords, setTimeCardRecords] = useState<{ id: number; name: string; pin: string; action: string; time: string }[]>([]);
+  const isOverlayShowing = showCreateAdmin || showLogin || showAddEmployee;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -100,7 +101,7 @@ const App: React.FC = () => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Check if the key is a number
     if (!isNaN(Number(e.key))) {
-      handleKeyPress(e.key);
+      { !isOverlayShowing && handleKeyPress(e.key); }
     }
     // Check if the key is backspace or delete
     if (e.key === 'Backspace' || e.key === 'Delete') {
@@ -140,27 +141,29 @@ const App: React.FC = () => {
       })
       .then((data) => {
         setTimeCardRecords([...timeCardRecords, { id: data.id, name: data.name, pin, action: record.action, time: record.time }]);
+        setPin(''); // Clearing the PIN
+        showMessageToUser('Time recorded successfully', 'success');
       })
       .catch((error) => {
         console.error('Error adding record:', error.error);
-        showMessageToUser('Error adding record: ' + error.error);
-    });
+        showMessageToUser('Error adding record: ' + error.error, 'error');
+      });      
   };
 
-  function showMessageToUser(message: string) {
+  function showMessageToUser(text: string, type: 'success' | 'error' | 'warning' | 'info') {
     const messageContainer = document.getElementById('message-container');
-    const errorMessage = document.createElement('p');
-    errorMessage.id = 'error-message';
-    errorMessage.textContent = message;
-    messageContainer?.appendChild(errorMessage);
+    const message = document.createElement('p');
+    message.classList.add(`${type}-message`);
+    message.textContent = text;
+    messageContainer?.appendChild(message);
   
     // Add the "show" class to make the message appear
-    errorMessage.classList.add('show');
+    message.classList.add('show');
   
     // Remove the message after 3 seconds
     setTimeout(() => {
-      errorMessage.classList.add('hide');
-      setTimeout(() => { messageContainer?.removeChild(errorMessage); }, 1000);
+      message.classList.add('hide');
+      setTimeout(() => { messageContainer?.removeChild(message); }, 1000);
     }, 3000);
   }  
 
@@ -178,11 +181,16 @@ const App: React.FC = () => {
 
   const onAddEmployeeSuccess = () => {
     setShowAddEmployee(false);
-  };  
+    showMessageToUser('Employee added successfully', 'success');
+  };
 
-  { !showCreateAdmin && !showLogin && timeClockContainerRef.current?.focus(); }
-
-  const isOverlayShowing = showCreateAdmin || showLogin || showAddEmployee;
+  // Focus on the time clock container when the app first loads
+  useEffect(() => {
+    if (!showCreateAdmin && !showLogin) {
+      timeClockContainerRef.current?.focus();
+    }
+  }, [showCreateAdmin, showLogin]);
+  
 
   // Return the JSX
   return (

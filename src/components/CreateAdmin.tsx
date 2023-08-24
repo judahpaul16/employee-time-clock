@@ -27,7 +27,7 @@ const CreateAdmin: React.FC<CreateAdminProps> = ({ onCreateSuccess }) => {
         return;
       }
 
-    fetch('/add-user', {
+    fetch('/add-admin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password, isAdmin: true })
