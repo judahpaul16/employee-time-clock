@@ -76,6 +76,7 @@ app.post('/login', (req, res) => {
     db.findOne({ username }, (err, user) => {
         if (err) return res.status(500).json({ error: err.message });
         // Verify password
+        if (!user) return res.status(401).json({ error: 'No user with those credentials' });
         const passwordIsValid = bcrypt.compareSync(password, user.password);
         if (!passwordIsValid) return res.status(401).json({ error: 'Invalid credentials' });
         

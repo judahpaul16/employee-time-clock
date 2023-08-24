@@ -21,10 +21,7 @@ const App: React.FC = () => {
       .then((response) => response.json())
       .then((data) => {
         setIsLoggedIn(data.isLoggedIn);
-        if (data.isLoggedIn) {
-          setShowLoginButton(false);
-        } else {
-          // If no users exist and not logged in, show CreateAdmin; else show login button
+        if (!data.isLoggedIn) {
           fetch('/get-records?_=' + new Date().getTime())
             .then((response) => response.json())
             .then((records) => {
@@ -37,7 +34,7 @@ const App: React.FC = () => {
         }
       })
       .catch((error) => console.error('Error checking login status:', error));
-  }, []);
+  }, [setIsLoggedIn]);
 
   // State to track the last interaction time
   const [lastInteractionTime, setLastInteractionTime] = useState(new Date());
@@ -143,7 +140,7 @@ const App: React.FC = () => {
   return (
     <div className="time-clock-container" ref={timeClockContainerRef} onKeyDown={handleKeyDown} tabIndex={0}>
       <Login showLogin={showLogin} onLoginSuccess={onLoginSuccess} />
-      {showCreateAdmin && <CreateAdmin onCreateSuccess={onCreateAdminSuccess} />}
+      {showCreateAdmin && !isLoggedIn && <CreateAdmin onCreateSuccess={onCreateAdminSuccess} />}
       <h1>Employee Time Clock</h1>
       <div id="currentTime">Current Time: {currentTime}</div>
       <div id="currentPin">Enter Your PIN: {pin}</div>
@@ -156,13 +153,10 @@ const App: React.FC = () => {
         <button onClick={() => handleActionClick('startBreak')}>Start Break</button>
         <button onClick={() => handleActionClick('endBreak')}>End Break</button>
       </div>
-      {showLoginButton && <button id="loginButton" onClick={() => setShowLogin(true)}>Login as an administrator to see and download time cards</button>}
-      {!showLoginButton && !showCreateAdmin && !showLogin && isLoggedIn && <hr></hr>}
-      {!showLoginButton && !showCreateAdmin && !showLogin && isLoggedIn && <TimeCard records={timeCardRecords} />}
-      {!showLoginButton && !showCreateAdmin && !showLogin && isLoggedIn && <button id="logoutButton" onClick={() => {
-        localStorage.removeItem('token')
-        setShowLoginButton(true)
-      }}>Logout:&nbsp;<small>in as</small><span id="adminText">&nbsp;administrator</span></button>}
+      {showLoginButton && !isLoggedIn && <button id="loginButton" onClick={() => setShowLogin(true)}>Login as an administrator to see and download time cards</button>}
+      {isLoggedIn && <hr></hr>}
+      {isLoggedIn && <TimeCard records={timeCardRecords} />}
+      {isLoggedIn && <button id="logoutButton" onClick={() => { setShowLoginButton(true); setIsLoggedIn(false); }}>Logout:&nbsp;<small>in as</small><span id="adminText">&nbsp;administrator</span></button>}
     </div>
   );
 };

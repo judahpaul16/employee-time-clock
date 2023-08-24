@@ -14,8 +14,8 @@ const Login: React.FC<LoginProps> = ({ showLogin, onLoginSuccess }) => {
     const handleLogin = async () => {
         try {
             const response = await axios.post('/login', { username, password });
-            if (response.data.success) { // Check if success flag is returned
-                onLoginSuccess(); // Just signal success to parent, no token needed
+            if (response.data.success) {
+                onLoginSuccess();
             } else {
                 setError('Invalid credentials');
             }

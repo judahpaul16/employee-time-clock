@@ -10,7 +10,19 @@ const CreateAdmin: React.FC<CreateAdminProps> = ({ onCreateSuccess }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  const MIN_USERNAME_LENGTH = 5; // Minimum required username length
+  const MIN_PASSWORD_LENGTH = 8; // Minimum required password length
+
   const handleCreateAdmin = async () => {
+    if (username.length < MIN_USERNAME_LENGTH) {
+      setError(`Username must be at least ${MIN_USERNAME_LENGTH} characters long`);
+      return;
+    }
+    if (password.length < MIN_PASSWORD_LENGTH) {
+      setError(`Password must be at least ${MIN_PASSWORD_LENGTH} characters long`);
+      return;
+    }
+
     fetch('/add-user', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
