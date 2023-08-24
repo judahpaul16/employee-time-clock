@@ -22,7 +22,7 @@ const App: React.FC = () => {
       .then((data) => {
         setIsLoggedIn(data.isLoggedIn);
         if (!data.isLoggedIn) {
-          fetch('/get-records?_=' + new Date().getTime())
+          fetch('/get-records?=' + new Date().getTime())
             .then((response) => response.json())
             .then((records) => {
               if (records.length === 0) {
@@ -30,11 +30,12 @@ const App: React.FC = () => {
               } else {
                 setShowLoginButton(true);
               }
-            });
+            })
+            .catch((error) => console.error('Error checking records:', error));
         }
       })
       .catch((error) => console.error('Error checking login status:', error));
-  }, [setIsLoggedIn]);
+  }, [setIsLoggedIn, setTimeCardRecords]);
 
   // State to track the last interaction time
   const [lastInteractionTime, setLastInteractionTime] = useState(new Date());
