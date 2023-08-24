@@ -30,13 +30,14 @@ const App: React.FC = () => {
       .then((data) => {
         setIsLoggedIn(data.isLoggedIn);
         if (!data.isLoggedIn) {
-          fetch('/get-records?=' + new Date().getTime())
+          fetch('/get-records?=' + currentTime)
             .then((response) => response.json())
             .then((records) => {
               if (records.length === 0) {
                 setShowCreateAdmin(true);
               } else {
                 setShowLoginButton(true);
+                setTimeCardRecords(records);
               }
             })
             .catch((error) => console.error('Error checking records:', error));

@@ -3,7 +3,7 @@ const Datastore = require('nedb');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const db = require('./init-db');
+const { usersDB, recordsDB } = require('./init-db.js');
 const path = require('path');
 const cors = require('cors');
 const session = require('express-session');
@@ -37,13 +37,33 @@ const requireAdmin = (req, res, next) => {
   next();
 };
 
-// Route to get records
+// Route to get records by PIN
 app.get('/get-records', (req, res) => {
-    db.find({}, (err, rows) => {
+    recordsDB.find({}, (err, rows) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json(rows);
+    });
+  });
+  
+  // Route to get all users
+  app.get('/get-users', requireAdmin, (req, res) => {
+    usersDB.find({}, (err, rows) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json(rows);
+    });
+  });
+  
+  // Route to get user records by user ID
+  app.get('/get-user-records', (req, res) => {
+    const { id } = req.query;
+    usersDB.findOne({ _id: id }, (err, user) => {
+      if (err) return res.status(500).json({ error: err.message });
+      recordsDB.find({ pin: user.pin }, (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(rows);
+      });
     });
-});
+  });
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
@@ -56,11 +76,11 @@ app.get('/', (req, res) => {
 app.post('/add-record', (req, res) => {
     const { pin, action, time } = req.body;
     // Find the name associated with the PIN
-    db.findOne({ pin }, (err, row) => {
+    recordsDB.findOne({ pin }, (err, row) => {
         if (err) return res.status(500).json({ error: err.message });
         const name = row ? row.name : 'Unknown';
         // Insert the new record
-        db.insert({ name, pin, action, time }, (err, newRecord) => {
+        recordsDB.insert({ name, pin, action, time }, (err, newRecord) => {
             if (err) return res.status(500).json({ error: err.message });
 
             // Return the new record ID and name
@@ -73,7 +93,7 @@ app.post('/add-record', (req, res) => {
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
     // Find the user in the database
-    db.findOne({ username }, (err, user) => {
+    usersDB.findOne({ username }, (err, user) => {
         if (err) return res.status(500).json({ error: err.message });
         // Verify password
         if (!user) return res.status(401).json({ error: 'No user with those credentials' });
@@ -109,7 +129,7 @@ app.post('/add-user', (req, res) => {
     // Generate a login token
     const loginToken = crypto.randomBytes(16).toString('hex');
     // Insert the new user
-    db.insert({ username, password: hashedPassword, loginToken: loginToken }, (err, newUser) => {
+    usersDB.insert({ username, password: hashedPassword, loginToken: loginToken }, (err, newUser) => {
         if (err) return res.status(500).json({ error: err.message });
         // Return the new user ID and login token
         res.status(201).json({ id: newUser._id, token: loginToken });
@@ -119,7 +139,10 @@ app.post('/add-user', (req, res) => {
 if (process.env.NODE_ENV === 'production') {
     // Export the app for production (e.g., when using Phusion Passenger)
     module.exports = app;
-    module.exports.db = db;
+    module.exports.db = {
+        usersDB,
+        recordsDB
+    };
 } else {
     // Start the server for local development and testing
     app.listen(port, () => {

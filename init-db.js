@@ -3,12 +3,17 @@ const path = require('path');
 const fs = require('fs');
 
 let dirPath = path.join(__dirname, 'dist');
-let dbPath = path.join(__dirname, 'dist', 'database.db');
+let usersPath = path.join(dirPath, 'users.db');
+let recordsPath = path.join(dirPath, 'records.db');
 
 if (!fs.existsSync(dirPath)) {
   fs.mkdirSync(dirPath);
 }
 
-let db = new Datastore({ filename: dbPath, autoload: true });
+const usersDB = new Datastore({ filename: usersPath, autoload: true });
+const recordsDB = new Datastore({ filename: recordsPath, autoload: true });
 
-module.exports = db;
+module.exports = {
+  usersDB,
+  recordsDB
+};
