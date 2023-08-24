@@ -91,7 +91,7 @@ body {
 }
 
 .time-card {
-    margin-top: 20px;
+    margin-block: 3em;
     width: 100%;
 }
 
