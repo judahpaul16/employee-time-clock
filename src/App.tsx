@@ -1,29 +1,84 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Keypad from './components/Keypad';
 import TimeCard from './components/TimeCard';
+import CreateAdmin from './components/CreateAdmin';
+import Login from './components/Login';
 
 const App: React.FC = () => {
-  const timeClockContainerRef = useRef<HTMLDivElement>(null);
-  const [pin, setPin] = useState('');
-  const [currentTime, setCurrentTime] = useState(new Date().toLocaleString());
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const timeClockContainerRef = useRef<HTMLDivElement>(null); // Ref to the timeClockContainer
+  const [showLogin, setShowLogin] = useState(false); // State to control showing login
+  const [showLoginButton, setShowLoginButton] = useState(false); // State to control showing login button
+  const [showCreateAdmin, setShowCreateAdmin] = useState(false); // State to control showing createAdmin
+  const [pin, setPin] = useState(''); // State to store the PIN
+  const [currentTime, setCurrentTime] = useState(new Date().toLocaleString()); // State to store the current time
+  // State to store the time card records
   const [timeCardRecords, setTimeCardRecords] = useState<{ id: number; name: string; pin: string; action: string; time: string }[]>([]);
 
+  // Effect to check if the user is logged in
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date().toLocaleString());
-    }, 1000);
-
-    fetch('/get-records?_=' + new Date().getTime())
+    fetch('/is-logged-in')
       .then((response) => response.json())
-      .then((data) => setTimeCardRecords(data))
-      .catch((error) => console.error('Error fetching records:', error));
-
-    return () => clearInterval(timer);
+      .then((data) => {
+        setIsLoggedIn(data.isLoggedIn);
+        if (data.isLoggedIn) {
+          setShowLoginButton(false);
+        } else {
+          // If no users exist and not logged in, show CreateAdmin; else show login button
+          fetch('/get-records?_=' + new Date().getTime())
+            .then((response) => response.json())
+            .then((records) => {
+              if (records.length === 0) {
+                setShowCreateAdmin(true);
+              } else {
+                setShowLoginButton(true);
+              }
+            });
+        }
+      })
+      .catch((error) => console.error('Error checking login status:', error));
   }, []);
-  
+
+  // State to track the last interaction time
+  const [lastInteractionTime, setLastInteractionTime] = useState(new Date());
+
+  // Handle user interactions
+  const handleInteraction = () => {
+    setLastInteractionTime(new Date());
+  };
+
+  // Use an effect to set up the inactivity timer and handle user interactions
   useEffect(() => {
-    timeClockContainerRef.current?.focus();
-  }, []);  
+    // Function to log the user out
+    const logout = () => {
+      fetch('/logout').then(() => {
+        setShowLoginButton(true);
+        window.location.reload(); // Reload the app to reflect changes
+      });
+    };
+
+    // Set up a timer to log out after 30 minutes of inactivity
+    const logoutTimer = setTimeout(() => {
+      const now = new Date();
+      const timeDiff = now.getTime() - lastInteractionTime.getTime(); // Time difference in milliseconds
+
+      if (timeDiff >= 30 * 60 * 1000) { // 30 minutes in milliseconds
+        logout();
+      }
+    }, 30 * 60 * 1000);
+
+    // Set up event listeners for user interactions
+    window.addEventListener('mousemove', handleInteraction);
+    window.addEventListener('keydown', handleInteraction);
+    window.addEventListener('click', handleInteraction);
+
+    return () => {
+      clearTimeout(logoutTimer);
+      window.removeEventListener('mousemove', handleInteraction);
+      window.removeEventListener('keydown', handleInteraction);
+      window.removeEventListener('click', handleInteraction);
+    };
+  }, [lastInteractionTime]); // Re-run the effect when the last interaction time changes
 
   const handleKeyPress = (key: string) => {
     setPin(pin + key);
@@ -47,7 +102,6 @@ const App: React.FC = () => {
       setTimeout(() => {currentPin.style.borderColor = 'gainsboro'; }, 750); // grey
       return;
     }
-
     const record = { action: selectedAction.charAt(0).toUpperCase() + selectedAction.slice(1), time: currentTime };
     fetch('/add-record', {
       method: 'POST',
@@ -71,8 +125,25 @@ const App: React.FC = () => {
     setPin('');
   };
 
+  const onLoginSuccess = () => {
+    setShowLogin(false);
+    setShowLoginButton(false);
+    setIsLoggedIn(true);
+  };
+
+  const onCreateAdminSuccess = () => {
+    setShowCreateAdmin(false);
+    setShowLoginButton(false);
+    setIsLoggedIn(true);
+  };
+
+  { !showCreateAdmin && !showLogin && timeClockContainerRef.current?.focus(); }
+
+  // Return the JSX
   return (
     <div className="time-clock-container" ref={timeClockContainerRef} onKeyDown={handleKeyDown} tabIndex={0}>
+      <Login showLogin={showLogin} onLoginSuccess={onLoginSuccess} />
+      {showCreateAdmin && <CreateAdmin onCreateSuccess={onCreateAdminSuccess} />}
       <h1>Employee Time Clock</h1>
       <div id="currentTime">Current Time: {currentTime}</div>
       <div id="currentPin">Enter Your PIN: {pin}</div>
@@ -84,8 +155,14 @@ const App: React.FC = () => {
         <button onClick={() => handleActionClick('clockOut')}>Clock Out</button>
         <button onClick={() => handleActionClick('startBreak')}>Start Break</button>
         <button onClick={() => handleActionClick('endBreak')}>End Break</button>
-      </div><hr></hr>
-      <TimeCard records={timeCardRecords} />
+      </div>
+      {showLoginButton && <button id="loginButton" onClick={() => setShowLogin(true)}>Login as an administrator to see and download time cards</button>}
+      {!showLoginButton && !showCreateAdmin && !showLogin && isLoggedIn && <hr></hr>}
+      {!showLoginButton && !showCreateAdmin && !showLogin && isLoggedIn && <TimeCard records={timeCardRecords} />}
+      {!showLoginButton && !showCreateAdmin && !showLogin && isLoggedIn && <button id="logoutButton" onClick={() => {
+        localStorage.removeItem('token')
+        setShowLoginButton(true)
+      }}>Logout:&nbsp;<small>in as</small><span id="adminText">&nbsp;administrator</span></button>}
     </div>
   );
 };
