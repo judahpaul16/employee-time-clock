@@ -23,7 +23,6 @@ db.loadDatabase((err) => {
   }
 });
 
-
 // Route to get records
 app.get('/get-records', (req, res) => {
     db.find({}, (err, rows) => {
@@ -62,6 +61,7 @@ app.post('/add-record', (req, res) => {
 if (process.env.NODE_ENV === 'production') {
     // Export the app for production (e.g., when using Phusion Passenger)
     module.exports = app;
+    module.exports.db = db;
 } else {
     // Start the server for local development and testing
     app.listen(port, () => {
