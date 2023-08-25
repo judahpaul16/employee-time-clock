@@ -154,7 +154,7 @@ const App: React.FC = () => {
     const lastAction = employeeStatus[pin];
     if (
       (selectedAction === 'clockIn' && lastAction !== 'clockOut' && lastAction !== undefined) ||
-      (selectedAction === 'clockOut' && lastAction !== 'clockIn') ||
+      (selectedAction === 'clockOut' && (lastAction !== 'clockIn' && lastAction !== 'endBreak')) ||
       (selectedAction === 'startBreak' && lastAction !== 'clockIn') ||
       (selectedAction === 'endBreak' && lastAction !== 'startBreak')
     ) {
