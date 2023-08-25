@@ -1,5 +1,4 @@
 const express = require('express');
-const Datastore = require('nedb');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
