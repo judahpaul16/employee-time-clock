@@ -71,7 +71,7 @@ app.get('/download-records', (req, res) => {
     recordsDB.find({}, (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
         // Convert records to CSV
-        const fields = ['name', 'pin', 'action', 'time'];
+        const fields = ['name', 'pin', 'action', 'time', 'ip'];
         const opts = { fields };
         const csv = json2csv(rows, opts);
         // Set the response header
@@ -91,24 +91,23 @@ app.get('/', (req, res) => {
 // Route to add record
 app.post('/add-record', (req, res) => {
     const { pin, action, time } = req.body;
-    
+    // Get client's IP address
+    const ip = req.ip;
     // Check if a user with the provided PIN exists
     usersDB.findOne({ pin }, (err, user) => {
       if (err) return res.status(500).json({ error: err.message });
-      
       if (!user) return res.status(400).json({ error: 'No user with this PIN' });
-  
       // Find the name associated with the PIN
       const name = user.name;
-      // Insert the new record
-      recordsDB.insert({ name, pin, action, time }, (err, newRecord) => {
+      // Insert the new record along with the IP
+      recordsDB.insert({ name, pin, action, time, ip }, (err, newRecord) => {
         if (err) return res.status(500).json({ error: err.message });
   
         // Return the new record ID and name
         res.status(201).json({ id: newRecord._id, name });
       });
     });
-});  
+});
 
 // Route to login
 app.post('/login', (req, res) => {

@@ -17,7 +17,7 @@ const App: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleString()); // State to store the current time
   const [showAddEmployee, setShowAddEmployee] = useState(false);
   // State to store the time card records
-  const [timeCardRecords, setTimeCardRecords] = useState<{ id: number; name: string; pin: string; action: string; time: string }[]>([]);
+  const [timeCardRecords, setTimeCardRecords] = useState<{ id: number; name: string; pin: string; action: string; time: string; ip: string }[]>([]);
   const isOverlayShowing = showCreateAdmin || showLogin || showAddEmployee;
 
   useEffect(() => {
@@ -161,7 +161,7 @@ const App: React.FC = () => {
         return response.json();
       })
       .then((data) => {
-        setTimeCardRecords([...timeCardRecords, { id: data.id, name: data.name, pin, action: record.action, time: record.time }]);
+        setTimeCardRecords([...timeCardRecords, { id: data.id, name: data.name, pin, action: record.action, time: record.time, ip: data.ip }]);
         setPin(''); // Clearing the PIN
         showMessageToUser('Time recorded successfully', 'success');
       })

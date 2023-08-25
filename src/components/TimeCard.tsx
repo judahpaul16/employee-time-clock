@@ -6,6 +6,7 @@ interface Record {
   pin: string;
   action: string;
   time: string;
+  ip: string;
 }
 
 interface TimeCardProps {
@@ -13,13 +14,16 @@ interface TimeCardProps {
 }
 
 const TimeCard: React.FC<TimeCardProps> = ({ records }) => {
-  // Group the records by PIN
   const groupedRecords: { [pin: string]: { name: string; records: Record[] } } = {};
+  const uniqueIps: { [pin: string]: Set<string> } = {};
+
   records.forEach((record) => {
     if (!groupedRecords[record.pin]) {
       groupedRecords[record.pin] = { name: record.name, records: [] };
+      uniqueIps[record.pin] = new Set();
     }
     groupedRecords[record.pin].records.push(record);
+    uniqueIps[record.pin].add(record.ip);
   });
 
   return (
@@ -33,6 +37,7 @@ const TimeCard: React.FC<TimeCardProps> = ({ records }) => {
               <tr>
                 <th>Action</th>
                 <th>Time</th>
+                <th>IP</th>
               </tr>
             </thead>
             <tbody>
@@ -40,6 +45,9 @@ const TimeCard: React.FC<TimeCardProps> = ({ records }) => {
                 <tr key={idx}>
                   <td>{record.action}</td>
                   <td>{record.time}</td>
+                  <td style={{ backgroundColor: uniqueIps[pin].size > 1 ? 'yellow' : 'transparent' }}>
+                    {record.ip}
+                  </td>
                 </tr>
               ))}
             </tbody>
