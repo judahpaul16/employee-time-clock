@@ -26,9 +26,17 @@ const TimeCard: React.FC<TimeCardProps> = ({ records }) => {
     uniqueIps[record.pin].add(record.ip);
   });
 
+  if (records.length === 0) {
+    return (
+      <div className="time-card">
+        <p>No one has clocked in yet.</p>
+      </div>
+    );
+  }
+  
   return (
     <div className="time-card">
-      <h2>Today's Time Cards</h2>
+      <h2 style={{ font: 'bold 1.5rem' }}>Today's Time Cards</h2>
       {Object.entries(groupedRecords).map(([pin, data], index) => (
         <div key={index}>
           <h3>{data.name} - {pin}</h3>
