@@ -13,11 +13,11 @@ let SECRET_KEY = crypto.randomBytes(32).toString('hex');
 
 // Create the Express app
 const app = express();
-app.use(cors());
+const port = 3001;
 const corsOptions = {optionsSuccessStatus: 204};
 app.use(cors(corsOptions));
-const port = 3001;
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'dist')));
 
 // Use session middleware
 app.use(session({
@@ -79,8 +79,6 @@ app.get('/download-records', (req, res) => {
         res.status(200).send(csv);
     });
 });
-
-app.use(express.static(path.join(__dirname, 'dist')));
 
 // Main route
 app.get('/', (req, res) => {

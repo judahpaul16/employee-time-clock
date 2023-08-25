@@ -8,18 +8,18 @@ import AddEmployee from './components/AddEmployee';
 import Login from './components/Login';
 
 const App: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to check if the user is logged in
   const timeClockContainerRef = useRef<HTMLDivElement>(null); // Ref to the timeClockContainer
   const [showLogin, setShowLogin] = useState(false); // State to control showing login
   const [showLoginButton, setShowLoginButton] = useState(false); // State to control showing login button
   const [showCreateAdmin, setShowCreateAdmin] = useState(false); // State to control showing createAdmin
   const [pin, setPin] = useState(''); // State to store the PIN
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleString()); // State to store the current time
-  const [showAddEmployee, setShowAddEmployee] = useState(false);
-  // State to store the time card records
-  const [timeCardRecords, setTimeCardRecords] = useState<{ id: number; name: string; pin: string; action: string; time: string; ip: string }[]>([]);
-  const [employeeStatus, setEmployeeStatus] = useState<{ [pin: string]: string }>({});
-  const isOverlayShowing = showCreateAdmin || showLogin || showAddEmployee;
+  const [showAddEmployee, setShowAddEmployee] = useState(false); // State to control showing addEmployee
+  const [timeCardRecords, setTimeCardRecords] = useState<{ id: number; name: string; pin: string; action: string; time: string; ip: string }[]>([]);  // State to store the time card records
+  const [employeeStatus, setEmployeeStatus] = useState<{ [pin: string]: string }>({}); // State to store the employee status
+  const isOverlayShowing = showCreateAdmin || showLogin || showAddEmployee; // State to check if an overlay is showing
+  const [lastInteractionTime, setLastInteractionTime] = useState(new Date()); // State to track the last interaction time
 
   // Effect to update the current time every second
   useEffect(() => {
@@ -57,8 +57,12 @@ const App: React.FC = () => {
       .catch((error) => console.error('Error checking login status:', error));
   }, [setIsLoggedIn, setTimeCardRecords]);
 
-  // State to track the last interaction time
-  const [lastInteractionTime, setLastInteractionTime] = useState(new Date());
+  // Focus on the time clock container when the app first loads
+  useEffect(() => {
+    if (!showCreateAdmin && !showLogin) {
+      timeClockContainerRef.current?.focus();
+    }
+  }, [showCreateAdmin, showLogin]);
 
   // Handle user interactions
   const handleInteraction = () => {
@@ -236,13 +240,6 @@ const App: React.FC = () => {
     setShowCreateAdmin(false);
     setShowAddEmployee(false);
   };
-
-  // Focus on the time clock container when the app first loads
-  useEffect(() => {
-    if (!showCreateAdmin && !showLogin) {
-      timeClockContainerRef.current?.focus();
-    }
-  }, [showCreateAdmin, showLogin]);
 
   // Return the JSX
   return (
