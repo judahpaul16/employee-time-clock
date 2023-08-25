@@ -18,6 +18,7 @@ const App: React.FC = () => {
   const [showAddEmployee, setShowAddEmployee] = useState(false);
   // State to store the time card records
   const [timeCardRecords, setTimeCardRecords] = useState<{ id: number; name: string; pin: string; action: string; time: string; ip: string }[]>([]);
+  const [employeeStatus, setEmployeeStatus] = useState<{ [pin: string]: string }>({});
   const isOverlayShowing = showCreateAdmin || showLogin || showAddEmployee;
 
   useEffect(() => {
@@ -148,6 +149,23 @@ const App: React.FC = () => {
       setTimeout(() => {currentPin.style.borderColor = 'gainsboro'; }, 750); // grey
       return;
     }
+
+    // Implementing the clock-in/clock-out logic
+    const lastAction = employeeStatus[pin];
+    if (
+      (selectedAction === 'clockIn' && lastAction !== 'clockOut' && lastAction !== undefined) ||
+      (selectedAction === 'clockOut' && lastAction !== 'clockIn') ||
+      (selectedAction === 'startBreak' && lastAction !== 'clockIn') ||
+      (selectedAction === 'endBreak' && lastAction !== 'startBreak')
+    ) {
+      let message = `Invalid action: ${selectedAction}, Last Action: ${lastAction}`;
+      if (selectedAction === 'clockOut' && !lastAction) message = 'You must clock in before you can clock out';
+      if (selectedAction === 'startBreak' && !lastAction) message = 'You must clock in before you can start a break';
+      if (selectedAction === 'endBreak' && !lastAction) message = 'You must start a break before you can end it';
+      showMessageToUser(message, 'error');
+      return;
+    }
+
     const record = { action: selectedAction.charAt(0).toUpperCase() + selectedAction.slice(1), time: currentTime };
 
     let ipResponse = await fetch('https://api.ipify.org?format=json');
@@ -166,6 +184,11 @@ const App: React.FC = () => {
         return response.json();
       })
       .then((data) => {
+        // Success, update the last action for this PIN
+        setEmployeeStatus({
+          ...employeeStatus,
+          [pin]: selectedAction,
+        });
         setTimeCardRecords([...timeCardRecords, { id: data.id, name: data.name, pin, action: record.action, time: record.time, ip: ip }]);
         setPin(''); // Clearing the PIN
         showMessageToUser('Time recorded successfully', 'success');
