@@ -90,9 +90,7 @@ app.get('/', (req, res) => {
 
 // Route to add record
 app.post('/add-record', (req, res) => {
-    const { pin, action, time } = req.body;
-    // Get client's IP address
-    const ip = req.ip;
+    const { pin, action, time, ip } = req.body;
     // Check if a user with the provided PIN exists
     usersDB.findOne({ pin }, (err, user) => {
       if (err) return res.status(500).json({ error: err.message });

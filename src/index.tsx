@@ -137,7 +137,7 @@ const App: React.FC = () => {
   };
   
 
-  const handleActionClick = (selectedAction: 'clockIn' | 'clockOut' | 'startBreak' | 'endBreak') => {
+  const handleActionClick = async (selectedAction: 'clockIn' | 'clockOut' | 'startBreak' | 'endBreak') => {
     // Flash red and exit early if no PIN is entered
     if (pin === '') {
       document.body.scrollTo(0, 0); // scroll up
@@ -149,10 +149,15 @@ const App: React.FC = () => {
       return;
     }
     const record = { action: selectedAction.charAt(0).toUpperCase() + selectedAction.slice(1), time: currentTime };
+
+    let ipResponse = await fetch('https://api.ipify.org?format=json');
+    let ipData = await ipResponse.json();
+    let ip = ipData.ip;
+
     fetch('/add-record', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ pin, action: record.action, time: record.time })
+      body: JSON.stringify({ pin, action: record.action, time: record.time, ip: ip })
     })
       .then((response) => {
         if (!response.ok) {
@@ -161,7 +166,7 @@ const App: React.FC = () => {
         return response.json();
       })
       .then((data) => {
-        setTimeCardRecords([...timeCardRecords, { id: data.id, name: data.name, pin, action: record.action, time: record.time, ip: data.ip }]);
+        setTimeCardRecords([...timeCardRecords, { id: data.id, name: data.name, pin, action: record.action, time: record.time, ip: ip }]);
         setPin(''); // Clearing the PIN
         showMessageToUser('Time recorded successfully', 'success');
       })

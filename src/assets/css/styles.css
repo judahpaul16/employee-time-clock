@@ -97,7 +97,7 @@ body {
 
 .time-card > div {
     display: inline-block;
-    width: 530px;
+    width: fit-content + 1em;
     margin-inline: 1em;
     vertical-align: middle;
 }
