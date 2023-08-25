@@ -119,8 +119,10 @@ body {
 }
 
 hr {
-    width: 85%;
+    width: 75%;
     margin: auto;
+    color: gainsboro;
+    border: 2px solid;
 }
 
 .login-overlay, .employee-overlay {
