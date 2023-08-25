@@ -21,6 +21,7 @@ const App: React.FC = () => {
   const [employeeStatus, setEmployeeStatus] = useState<{ [pin: string]: string }>({});
   const isOverlayShowing = showCreateAdmin || showLogin || showAddEmployee;
 
+  // Effect to update the current time every second
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date().toLocaleString());
@@ -136,7 +137,6 @@ const App: React.FC = () => {
   const handleClear = () => {
     setPin(''); // Clear the entire PIN
   };
-  
 
   const handleActionClick = async (selectedAction: 'clockIn' | 'clockOut' | 'startBreak' | 'endBreak') => {
     // Flash red and exit early if no PIN is entered
@@ -178,9 +178,7 @@ const App: React.FC = () => {
       body: JSON.stringify({ pin, action: record.action, time: record.time, ip: ip })
     })
       .then((response) => {
-        if (!response.ok) {
-          return response.json().then((error) => Promise.reject(error));
-        }
+        if (!response.ok) return response.json().then((error) => Promise.reject(error));
         return response.json();
       })
       .then((data) => {
@@ -245,7 +243,6 @@ const App: React.FC = () => {
       timeClockContainerRef.current?.focus();
     }
   }, [showCreateAdmin, showLogin]);
-  
 
   // Return the JSX
   return (
@@ -284,9 +281,9 @@ const App: React.FC = () => {
 const container = document.getElementById('root');
 const root = createRoot(container);
 root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );
 
 export default App;
