@@ -216,7 +216,23 @@ const App: React.FC = () => {
       message.classList.add('hide');
       setTimeout(() => { messageContainer?.removeChild(message); }, 1000);
     }, 3000);
-  }  
+  }
+
+  function downloadRecords() {
+    fetch('/download-records', { method: 'POST' })
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'time-cards.csv');
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode?.removeChild(link);
+      })
+      .then(() => showMessageToUser('Records downloaded', 'info'))
+      .catch((error) => console.error('Error downloading records:', error));
+  }
 
   const onLoginSuccess = () => {
     setShowLogin(false);
@@ -232,7 +248,7 @@ const App: React.FC = () => {
 
   const onAddEmployeeSuccess = () => {
     setShowAddEmployee(false);
-    showMessageToUser('Employee added successfully', 'success');
+    showMessageToUser('Employee added', 'info');
   };
 
   const onCloseOverlay = () => {
@@ -267,7 +283,7 @@ const App: React.FC = () => {
         Login as an administrator to see and download time cards</button>}
       {isLoggedIn && <hr></hr>}
       {isLoggedIn && <TimeCard records={timeCardRecords} />}
-      {!isOverlayShowing && isLoggedIn && <button id="downloadButton" onClick={() => { window.open('/download-records'); }}>Download All Records</button>}
+      {!isOverlayShowing && isLoggedIn && <button id="downloadButton" onClick={() => { downloadRecords(); }}>Download All Records</button>}
       {!isOverlayShowing && isLoggedIn && <button id="addEmployeeButton" onClick={() => { setShowAddEmployee(true) }}>Add New Employee</button>}
       {!isOverlayShowing && isLoggedIn && <button id="logoutButton" onClick={() => { setShowLoginButton(true); setIsLoggedIn(false); }}>Logout</button>}
     </div>

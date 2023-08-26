@@ -14,34 +14,36 @@ let SECRET_KEY = crypto.randomBytes(32).toString('hex');
 // Create the Express app
 const app = express();
 const port = 3001;
-const corsOptions = {optionsSuccessStatus: 204};
+const corsOptions = {
+    credentials: true, 
+    optionsSuccessStatus: 204
+};
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // Use session middleware
 app.use(session({
-  secret: SECRET_KEY,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true, // Ensures the cookie is sent as HttpOnly
-    secure: true,  // Set to true if you are using HTTPS
-  }
+    secret: SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true, // Ensures the cookie is sent as HttpOnly
+        secure: true,  // Set to true if you are using HTTPS
+    }
 }));
 
-const requireAdmin = (req, res, next) => {
-  if (!req.session || req.session.admin !== true) {
-    return res.status(403).json({ error: 'Admin privileges required' });
-  }
-  next();
+let requireAdmin = (req, res, next) => {
+    if (!req.session || req.session.admin !== true) 
+        return res.status(403).json({ error: 'Admin privileges required' });
+    next();
 };
 
 // Route to get records by PIN
-app.get('/get-records', (req, res) => {
+app.get('/get-records', requireAdmin, (req, res) => {
     recordsDB.find({}, (err, rows) => {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json(rows);
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
     });
 });
 
@@ -53,20 +55,8 @@ app.get('/get-users', (req, res) => {
     });
 });
 
-// Route to get user records by user ID
-app.get('/get-user-records', (req, res) => {
-    const { id } = req.query;
-    usersDB.findOne({ _id: id }, (err, user) => {
-        if (err) return res.status(500).json({ error: err.message });
-        recordsDB.find({ pin: user.pin }, (err, rows) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(rows);
-        });
-    });
-});
-
 // Route to download records as CSV
-app.get('/download-records', (req, res) => {
+app.post('/download-records', (req, res) => {
     recordsDB.find({}, (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
         // Convert records to CSV
@@ -90,17 +80,17 @@ app.post('/add-record', (req, res) => {
     const { pin, action, time, ip } = req.body;
     // Check if a user with the provided PIN exists
     usersDB.findOne({ pin }, (err, user) => {
-      if (err) return res.status(500).json({ error: err.message });
-      if (!user) return res.status(400).json({ error: 'No user with this PIN' });
-      // Find the name associated with the PIN
-      const name = user.name;
-      // Insert the new record along with the IP
-      recordsDB.insert({ name, pin, action, time, ip }, (err, newRecord) => {
         if (err) return res.status(500).json({ error: err.message });
-  
-        // Return the new record ID and name
-        res.status(201).json({ id: newRecord._id, name });
-      });
+        if (!user) return res.status(400).json({ error: 'No user with this PIN' });
+        // Find the name associated with the PIN
+        const name = user.name;
+        // Insert the new record along with the IP
+        recordsDB.insert({ name, pin, action, time, ip }, (err, newRecord) => {
+            if (err) return res.status(500).json({ error: err.message });
+    
+            // Return the new record ID and name
+            res.status(201).json({ id: newRecord._id, name });
+        });
     });
 });
 
@@ -117,8 +107,10 @@ app.post('/login', (req, res) => {
         
         // Set admin flag in session
         req.session.admin = true;
-    
-        res.json({ success: true });
+        req.session.save(err => {
+          if(err) return res.status(500).json({ error: err.message });
+          res.json({ success: true });
+        });
     });
 });
   
