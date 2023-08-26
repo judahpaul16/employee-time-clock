@@ -39,8 +39,13 @@ let requireAdmin = (req, res, next) => {
     next();
 };
 
+// Main route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
+});
+
 // Route to get records by PIN
-app.get('/get-records', requireAdmin, (req, res) => {
+app.post('/get-records', (req, res) => {
     recordsDB.find({}, (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(rows);
@@ -48,7 +53,7 @@ app.get('/get-records', requireAdmin, (req, res) => {
 });
 
 // Route to get all users
-app.get('/get-users', (req, res) => {
+app.post('/get-users', (req, res) => {
     usersDB.find({}, (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(rows);
@@ -68,11 +73,6 @@ app.post('/download-records', (req, res) => {
         res.set('Content-Type', 'text/csv');
         res.status(200).send(csv);
     });
-});
-
-// Main route
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
 // Route to add record

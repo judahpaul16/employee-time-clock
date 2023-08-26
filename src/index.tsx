@@ -37,13 +37,13 @@ const App: React.FC = () => {
       .then((data) => {
         setIsLoggedIn(data.isLoggedIn);
         if (!data.isLoggedIn) {
-          fetch('/get-users?=' + currentTime)
+          fetch('/get-users', { method: 'POST' })
             .then((response) => response.json())
             .then((users) => {
               if (users.length === 0) {
                 setShowCreateAdmin(true);
               } else {
-                fetch('/get-records?=' + currentTime)
+                fetch('/get-records', { method: 'POST' })
                   .then((response) => response.json())
                   .then((records) => {
                     setShowLoginButton(true);
