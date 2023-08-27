@@ -15,7 +15,7 @@ let SECRET_KEY = crypto.randomBytes(32).toString('hex');
 const app = express();
 const port = 3001;
 const corsOptions = {
-    credentials: true, 
+    credentials: true,
     optionsSuccessStatus: 204
 };
 app.use(cors(corsOptions));
@@ -34,7 +34,7 @@ app.use(session({
 }));
 
 let requireAdmin = (req, res, next) => {
-    if (!req.session || req.session.admin !== true) 
+    if (!req.session || req.session.admin !== true)
         return res.status(403).json({ error: 'Admin privileges required' });
     next();
 };
@@ -87,7 +87,7 @@ app.post('/add-record', (req, res) => {
         // Insert the new record along with the IP
         recordsDB.insert({ name, pin, action, time, ip }, (err, newRecord) => {
             if (err) return res.status(500).json({ error: err.message });
-    
+
             // Return the new record ID and name
             res.status(201).json({ id: newRecord._id, name });
         });
@@ -104,16 +104,16 @@ app.post('/login', (req, res) => {
         if (!user) return res.status(401).json({ error: 'No user with those credentials' });
         const passwordIsValid = bcrypt.compareSync(password, user.password);
         if (!passwordIsValid) return res.status(401).json({ error: 'Invalid credentials' });
-        
+
         // Set admin flag in session
         req.session.admin = true;
         req.session.save(err => {
-          if(err) return res.status(500).json({ error: err.message });
-          res.json({ success: true });
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ success: true });
         });
     });
 });
-  
+
 // Route to logout
 app.post('/logout', (req, res) => {
     // Destroy the session

@@ -26,31 +26,31 @@ const Login: React.FC<LoginProps> = ({ showLogin, onLoginSuccess, onCloseOverlay
     };
 
     return (
-    showLogin && (
-        <div className="login-overlay">
-            <div className="login-container">
-            <button className="close-btn" onClick={onCloseOverlay}>X</button>
-            <h1>Login</h1>
-            <div>
-                <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                />
+        showLogin && (
+            <div className="login-overlay">
+                <div className="login-container">
+                    <button className="close-btn" onClick={onCloseOverlay}>X</button>
+                    <h1>Login</h1>
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+                    {error && <div className="login-error">{error}</div>}
+                    <button id="login" onClick={handleLogin}>Login</button>
+                </div>
             </div>
-            <div>
-                <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                />
-            </div>
-            {error && <div className="login-error">{error}</div>}
-            <button id="login" onClick={handleLogin}>Login</button>
-            </div>
-        </div>
         )
     );
 };

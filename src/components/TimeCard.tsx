@@ -33,7 +33,7 @@ const TimeCard: React.FC<TimeCardProps> = ({ records }) => {
       </div>
     );
   }
-  
+
   return (
     <div className="time-card">
       <h2 style={{ font: 'bold 1.5rem' }}>Today's Time Cards</h2>

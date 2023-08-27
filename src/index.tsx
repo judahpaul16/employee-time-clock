@@ -26,10 +26,10 @@ const App: React.FC = () => {
     const timer = setInterval(() => {
       setCurrentTime(new Date().toLocaleString());
     }, 1000);
-  
+
     return () => clearInterval(timer);
   }, []);
-  
+
   // Effect to check if the user is logged in
   useEffect(() => {
     fetch('/is-logged-in')
@@ -106,7 +106,7 @@ const App: React.FC = () => {
     if (pin.length < 6 && key.trim() !== '' && !isNaN(Number(key))) {
       setPin(pin + key);
     }
-  };  
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Check if the key is a number
@@ -132,7 +132,7 @@ const App: React.FC = () => {
         addEmployeeButton?.click();
       }
     }
-  };  
+  };
 
   const handleBackspace = () => {
     setPin(pin.slice(0, -1)); // Remove the last character from the PIN
@@ -148,9 +148,9 @@ const App: React.FC = () => {
       document.body.scrollTo(0, 0); // scroll up
       let currentPin = document.getElementById('currentPin');
       currentPin.style.borderColor = '#ff7866'; // red
-      setTimeout(() => {currentPin.style.borderColor = 'gainsboro';}, 250); // grey
-      setTimeout(() => {currentPin.style.borderColor = '#ff7866'; }, 500); // red
-      setTimeout(() => {currentPin.style.borderColor = 'gainsboro'; }, 750); // grey
+      setTimeout(() => { currentPin.style.borderColor = 'gainsboro'; }, 250); // grey
+      setTimeout(() => { currentPin.style.borderColor = '#ff7866'; }, 500); // red
+      setTimeout(() => { currentPin.style.borderColor = 'gainsboro'; }, 750); // grey
       return;
     }
 
@@ -198,7 +198,7 @@ const App: React.FC = () => {
       .catch((error) => {
         console.error('Error adding record:', error.error);
         showMessageToUser('Error adding record: ' + error.error, 'error');
-      });      
+      });
   };
 
   function showMessageToUser(text: string, type: 'success' | 'error' | 'warning' | 'info') {
@@ -207,10 +207,10 @@ const App: React.FC = () => {
     message.classList.add(`${type}-message`);
     message.textContent = text;
     messageContainer?.appendChild(message);
-  
+
     // Add the "show" class to make the message appear
     message.classList.add('show');
-  
+
     // Remove the message after 3 seconds
     setTimeout(() => {
       message.classList.add('hide');
