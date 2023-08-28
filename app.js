@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const { usersDB, recordsDB } = require('./init-db.js');
 const json2csv = require('json2csv').parse;
