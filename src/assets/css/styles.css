@@ -1,339 +1,339 @@
 html,
 body,
 canvas {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    overflow: hidden;
-    transition: all 0.3s ease;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 body {
-    overflow-y: scroll !important;
+  overflow-y: scroll !important;
 }
 
 .time-clock-container {
-    font-family: Arial, sans-serif;
-    height: 100%;
-    width: 100%;
-    margin-top: 4em;
+  font-family: Arial, sans-serif;
+  height: 100%;
+  width: 100%;
+  margin-top: 4em;
 }
 
 .time-clock-container:focus {
-    outline: none;
+  outline: none;
 }
 
 .main-container {
-    display: inline-flex;
-    align-items: center;
-    text-align: center;
-    height: 100%;
-    justify-content: space-between;
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  justify-content: space-between;
 }
 
 .keypad-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    width: 200px;
-    margin: 2em auto;
-    justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 200px;
+  margin: 2em auto;
+  justify-content: center;
 }
 
 .keypad-button {
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
-    margin: 5px;
-    border: 2px solid #888;
-    background-color: #f0f0f0;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 10px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  margin: 5px;
+  border: 2px solid #888;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 }
 
 .keypad-button:hover {
-    background-color: #ddd;
-    transform: scale(1.1);
+  background-color: #ddd;
+  transform: scale(1.1);
 }
 
 .action-buttons {
-    display: inline-grid;
+  display: inline-grid;
 }
 
 .action-buttons button {
-    display: block;
-    margin: 10px 0;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-inline: 1em;
-    transition: background-color 0.3s;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 10px 0;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-inline: 1em;
+  transition: background-color 0.3s;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 }
 
 .action-buttons button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 #currentTime {
-    margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 
 #currentPin {
-    width: fit-content;
-    margin: auto;
-    padding: 0.5em;
-    border: solid gainsboro;
+  width: fit-content;
+  margin: auto;
+  padding: 0.5em;
+  border: solid gainsboro;
 }
 
 .time-card {
-    margin-block: 3em;
-    width: 100%;
+  margin-block: 3em;
+  width: 100%;
 }
 
-.time-card>div {
-    display: inline-block;
-    width: fit-content + 1em;
-    margin-inline: 1em;
-    vertical-align: middle;
+.time-card > div {
+  display: inline-block;
+  width: fit-content + 1em;
+  margin-inline: 1em;
+  vertical-align: middle;
 }
 
 .time-card table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .time-card th,
 .time-card td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
 }
 
 .time-card th {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 
 hr {
-    width: 75%;
-    margin: auto;
-    color: gainsboro;
-    border: 2px solid;
+  width: 75%;
+  margin: auto;
+  color: gainsboro;
+  border: 2px solid;
 }
 
 .login-overlay,
 .employee-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .login-container,
 .employee-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.login-container>div,
-.employee-container>div {
-    margin-bottom: 1em;
+.login-container > div,
+.employee-container > div {
+  margin-bottom: 1em;
 }
 
-.login-container>button,
-.employee-container>button {
-    margin: 0 0.5em;
-    padding: 0.5em;
-    border: none;
-    border-radius: 5px;
-    background-color: #3ca7ff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.login-container > button,
+.employee-container > button {
+  margin: 0 0.5em;
+  padding: 0.5em;
+  border: none;
+  border-radius: 5px;
+  background-color: #3ca7ff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.login-container>button:hover,
-.employee-container>button:hover {
-    background-color: #007bff;
+.login-container > button:hover,
+.employee-container > button:hover {
+  background-color: #007bff;
 }
 
 .login-error,
 .employee-error {
-    color: red;
+  color: red;
 }
 
 #loginButton {
-    display: block;
-    margin: 0 auto 2em;
-    padding: 1em;
-    color: white;
-    font-size: 12pt;
-    border: none;
-    border-radius: 5px;
-    background-color: #ff7676;
+  display: block;
+  margin: 0 auto 2em;
+  padding: 1em;
+  color: white;
+  font-size: 12pt;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff7676;
 }
 
 #loginButton:hover {
-    background-color: #ff0000;
+  background-color: #ff0000;
 }
 
 #logoutButton {
-    position: fixed;
-    top: 8em;
-    left: 0;
-    margin: 1em;
-    padding: 1em;
-    color: white;
-    font-size: 11pt;
-    border: none;
-    border-radius: 5px;
-    background-color: #c5c5c5;
+  position: fixed;
+  top: 8em;
+  left: 0;
+  margin: 1em;
+  padding: 1em;
+  color: white;
+  font-size: 11pt;
+  border: none;
+  border-radius: 5px;
+  background-color: #c5c5c5;
 }
 
 #logoutButton:hover {
-    background-color: #a7a7a7;
+  background-color: #a7a7a7;
 }
 
 #addEmployeeButton {
-    position: fixed;
-    top: 4em;
-    left: 0;
-    margin: 1em;
-    padding: 1em;
-    color: white;
-    font-size: 11pt;
-    border: none;
-    border-radius: 5px;
-    background-color: #3ca7ff;
+  position: fixed;
+  top: 4em;
+  left: 0;
+  margin: 1em;
+  padding: 1em;
+  color: white;
+  font-size: 11pt;
+  border: none;
+  border-radius: 5px;
+  background-color: #3ca7ff;
 }
 
 #addEmployeeButton:hover {
-    background-color: #007bff;
+  background-color: #007bff;
 }
 
 #downloadButton {
-    position: fixed;
-    top: 0;
-    left: 0;
-    margin: 1em;
-    padding: 1em;
-    color: white;
-    font-size: 11pt;
-    border: none;
-    border-radius: 5px;
-    background-color: #ff7676;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 1em;
+  padding: 1em;
+  color: white;
+  font-size: 11pt;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff7676;
 }
 
 #downloadButton:hover {
-    background-color: #ff0000;
+  background-color: #ff0000;
 }
 
 .close-btn {
-    position: relative;
-    float: right;
-    background-color: transparent !important;
-    color: #b1b1b1 !important;
-    padding-inline: 0.75em !important;
-    border: 2px solid #ebebeb !important;
-    font-size: 14px;
+  position: relative;
+  float: right;
+  background-color: transparent !important;
+  color: #b1b1b1 !important;
+  padding-inline: 0.75em !important;
+  border: 2px solid #ebebeb !important;
+  font-size: 14px;
 }
 
 #adminText {
-    color: #3ca7ff;
-    font-size: small;
+  color: #3ca7ff;
+  font-size: small;
 }
 
 input[type="text"],
 input[type="password"] {
-    width: 70%;
-    padding: 0.5em;
-    border: solid gainsboro;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  width: 70%;
+  padding: 0.5em;
+  border: solid gainsboro;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 }
 
 #createAcc {
-    margin-bottom: 0.25em;
+  margin-bottom: 0.25em;
 }
 
 #username {
-    margin-top: 0.5em;
+  margin-top: 0.5em;
 }
 
 .error-message,
 .success-message,
 .warning-message,
 .info-message {
-    position: fixed;
-    bottom: 1em;
-    right: 1em;
-    padding: 10px 20px;
-    background-color: #f44336;
-    color: #ffffff;
-    border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    font-size: 16px;
-    text-align: center;
-    z-index: 1000;
-    opacity: 0;
-    margin-right: 1.5em;
-    transition: opacity 0.3s ease-in-out;
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
+  padding: 10px 20px;
+  background-color: #f44336;
+  color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  text-align: center;
+  z-index: 1000;
+  opacity: 0;
+  margin-right: 1.5em;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .error-message.show,
 .success-message.show,
 .warning-message.show,
 .info-message.show {
-    opacity: 1;
+  opacity: 1;
 }
 
 .error-message.hide,
 .success-message.hide,
 .warning-message.hide,
 .info-message.hide {
-    opacity: 0;
+  opacity: 0;
 }
 
 .success-message {
-    background-color: #4CAF50;
+  background-color: #4caf50;
 }
 
 .warning-message {
-    background-color: #ff9800;
+  background-color: #ff9800;
 }
 
 .info-message {
-    background-color: #2196F3;
+  background-color: #2196f3;
 }
 
 .clear-button {
-    background: linear-gradient(to right, #f8f9fa, #e9ecef);
-    border: none;
-    color: #333;
-    padding: 6px 8px;
-    text-align: center;
-    text-decoration: none;
-    display: inline;
-    font-size: 15px;
-    margin: 5px 0 0;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.3s ease;
+  background: linear-gradient(to right, #f8f9fa, #e9ecef);
+  border: none;
+  color: #333;
+  padding: 6px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline;
+  font-size: 15px;
+  margin: 5px 0 0;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.3s ease;
 }
 
 .clear-button:hover {
-    background: linear-gradient(to right, #e9ecef, #f8f9fa);
+  background: linear-gradient(to right, #e9ecef, #f8f9fa);
 }
