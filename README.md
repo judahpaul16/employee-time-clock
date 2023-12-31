@@ -1,4 +1,4 @@
-# Employee Time Clock
+# 🕙 Employee Time Clock 🕐
 
 A simple web-based employee time clock application built with React.
 
