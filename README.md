@@ -13,23 +13,27 @@ A simple web-based employee time clock application built with React.
    ```bash
    git clone https://github.com/judahpaul16/employee-time-clock.git
    cd employee-time-clock
+   ```
    
 2. **Install Dependencies**
 
    ```bash
-    npm i
+   npm i
+   ```
 
 3. **Start the Application** (Development)
 
    ```bash
-    # serves application to port 8081
-    npm start
+   # serves application to port 3001
+   npm start
+   ```
 
 4. **Build the Application** (Production)
 
    ```bash
-    # builds application in the 'dist' folder
-    npm run build
+   # builds application in the 'dist' folder
+   npm run build
+   ```
 
 ## Usage
 
